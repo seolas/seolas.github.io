@@ -490,3 +490,12 @@ ssh-keygen -t rsa -C "youremail@example.com"
 ```bash
 ssh -T git@github.com
 ```
+
+# 使用场景
+
+## 修改提交人
+
+```bash
+# 如果不需要修改提交信息, 使用 --no-edit
+git commit --amend --author="seolas<contact@seolas.fun>"
+```

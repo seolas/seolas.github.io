@@ -1,5 +1,5 @@
 ---
-title: c-note
+title: C 笔记
 date: 2023-12-26 16:23:58
 tags: [c]
 ---
