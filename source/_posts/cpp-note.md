@@ -133,3 +133,32 @@ int* &r = p;
 int i = 1;
 r = &i;
 ```
+
+### extern 用法
+
+定义
+
+```cpp
+# base.cpp
+extern const int extBufSize = 512;
+```
+
+头文件声明
+
+```cpp
+# base.h
+extern const int extBufSize;
+```
+
+引入
+
+```cpp
+# test.cpp
+#include <iostream>
+#include "base.h"
+int main()
+{
+    std::cout <<extBufSize << std::endl;
+    return 0;
+}
+```
