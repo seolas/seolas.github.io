@@ -67,3 +67,69 @@ int main()
 ```json
 chcp 65001;
 ```
+
+## 持续输入
+
+```cpp
+#include <iostream>
+int main()
+{
+    int sum = 0, value = 0;
+    std::cout << "请开始输入数字: " << std::endl;
+    while (std::cin >> value)
+    {
+        sum += value;
+    }
+
+    std::cout << "sum = " << sum << std::endl;
+    return 0;
+}
+```
+
+按 CTRL + Z 再按 ENTER 结束输入
+
+## 语法
+
+### 列表初始化
+
+```cpp
+int a = 0;
+int b = {0};
+int c{0};
+int d(0);
+```
+
+### 声明
+
+```cpp
+extern int i;
+```
+
+### 全局变量
+
+```cpp
+#include <iostream>
+int reused = 1;
+int unique = 2;
+int main()
+{
+    int reused = 3;
+    // 局部和全局变量同名时, 使用 :: 访问全局变量
+    std::cout << unique << reused << ::reused << std::endl; // 231
+}
+```
+
+### 引用
+
+```cpp
+// 变量的引用
+int val = 1024;
+int &refVal = val;
+refVal = 1025;
+std::cout << val << std::endl; // 1025
+// 指针的引用
+int* p;
+int* &r = p;
+int i = 1;
+r = &i;
+```
