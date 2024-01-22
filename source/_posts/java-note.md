@@ -661,6 +661,8 @@ public class OperatorDemo03 {
 }
 ```
 
+### +号的多种用法
+
 ```java
 /*
 	+号的多种用法:
@@ -1031,7 +1033,7 @@ public class OperatorDemo12 {
 }
 ```
 
-### 位运算符
+### 原码,反码,补码
 
 ```java
 /*
@@ -1088,6 +1090,8 @@ public class OperatorDemo12 {
 			结果数据:-126
 */
 ```
+
+### 位运算符
 
 ```java
 /*
@@ -2663,6 +2667,8 @@ public class MethodDemo05 {
 }
 ```
 
+### 栈内存(本地方法栈)
+
 ![Alt text](java-note/image-2.png)
 
 ```java
@@ -3101,6 +3107,8 @@ public class MethodDemo16 {
 
 ## 数组
 
+### IDEA层级
+
 ![Alt text](java-note/image-6.png)
 
 ```java
@@ -3290,7 +3298,7 @@ public class ArrayDemo05 {
 }
 ```
 
-### 数组初始化的内存图解
+### JVM内存的划分
 
 ```java
 /**
@@ -3362,6 +3370,8 @@ public class ArrayDemo06 {
     }
 }
 ```
+
+### 数组初始化的内存图解
 
 ```java
 /**
@@ -3892,7 +3902,7 @@ public class ArrayDemo06 {
 ![堆排序](java-note/sort-9.gif)
 
 
-### 可变参数
+### 方法参数
 
 ```java
 /**
@@ -3988,6 +3998,8 @@ public class ArrayDemo07 {
 }
 ```
 
+### 可变参数
+
 ```java
 /**
  * 可变参数(JDK5.0)
@@ -4078,8 +4090,9 @@ public class ArrayDemo09 {
         return arr[index];
     }
 }
-
 ```
+
+### 二分查找法(折半查找法)
 
 ```java
 /**
@@ -4759,6 +4772,8 @@ public class OOPDemo05 {
 }
 ```
 
+### this关键字
+
 ```java
 /**
  * 回顾:在同一作用域内,不可以声明同名的变量
@@ -5119,95 +5134,859 @@ public class Student {
 }
 ```
 
+### 匿名对象
+
 ```java
+/**
+ * 匿名对象:
+ *      含义:
+ *          没有名字的对象
+ *      格式:
+ *          new 类名(实参);
+ *      好处:
+ *          降低对象在内存中的时间,提高内存的使用率
+ *      弊端:
+ *          匿名对象只能使用唯一的一次
+ */
+public class OOPDemo01 {
+    public static void main(String[] args) {
+        //类名 对象名 = new 类名(实参);
+        Student s = new Student();
+        method(s);//学生对象如果被垃圾回收器进行回收,需要被标记为垃圾数据,等到main()结束时,才会被标记为垃圾数据
+        method(s);
+
+        System.out.println("===============================");
+
+        method(new Student());//学生对象如果被垃圾回收器进行回收,需要被标记为垃圾数据,等到method()结束时,才会被标记为垃圾数据
+        method(new Student());
+
+    }
+
+    public static void method (Student s) {
+        System.out.println(s);
+    }
+}
+```
+
+### 对象数组
+
+```java
+/**
+ * 对象数组:
+ *      含义:
+ *          存储对象的数组
+ *      初始化:
+ *          动态初始化
+ *              类名[] 数组名 = new 类名[数组长度];
+ *          静态初始化:
+ *              类名[] 数组名 = new 类名[]{对象名1,对象名2,......,对象名n};
+ *              类名[] 数组名 = {对象名1,对象名2,......,对象名n};
+ */
+public class OOPDemo02 {
+    public static void main(String[] args) {
+        //对象数组的动态初始化
+        Student[] stuArr1 = new Student[4];
+
+        //创建对象
+        Student s1 = new Student("去病", 18);
+        Student s2 = new Student("卫小青", 18);
+        Student s3 = new Student("张小骞", 18);
+        Student s4 = new Student("韩小信", 18);
+
+        stuArr1[0] = s1;
+        stuArr1[1] = s2;
+        stuArr1[2] = s3;
+        stuArr1[3] = s4;
+
+        for (int i = 0; i < stuArr1.length; i++) {
+            System.out.println(stuArr1[i].print());
+        }
+
+        System.out.println("==================================");
+
+        //对象数组的静态初始化
+        Student stu1 = new Student("城小将",18);
+        Student stu2 = new Student("唐小妃",18);
+        Student stu3 = new Student("李小白",18);
+        Student stu4 = new Student("波斯客",18);
+
+        Student[] stuArr2 = {stu1,stu2,stu3,stu4};
+
+        for (int i = 0; i < stuArr2.length; i++) {
+            System.out.println(stuArr2[i].print());
+        }
+    }
+}
+```
+
+```java
+public class Student {
+    private String name;
+    private int age;
+
+    public Student() {
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String print () {
+        return name + "=" + age;
+    }
+}
+```
+
+### 类中的私有方法
+
+```java
+public class ClassPrivateMethod {
+    public void method01 () {
+        /*System.out.println("你好");
+        System.out.println("我好");
+        System.out.println("大家好");*/
+        method();
+        System.out.println("苗苗老师好");
+    }
+
+    public void method02 () {
+        /*System.out.println("你好");
+        System.out.println("我好");
+        System.out.println("大家好");*/
+        method();
+        System.out.println("沙沙老师好");
+    }
+
+    private void method () {
+        System.out.println("你好");
+        System.out.println("我好");
+        System.out.println("大家好");
+    }
+}
+```
+
+```java
+/**
+ * 类中的私有方法
+ *      含义:
+ *          被private修饰的方法
+ *      特点:
+ *          被private修饰的方法只能在本类中进行调用使用,不能在本类之外进行调用,如果调用编译报错
+ *      格式:
+ *          private 修饰符 返回类型 方法名 () {}
+ */
+public class OOPDemo03 {
+    public static void main(String[] args) {
+        //创建ClassPrivateMethod对象
+        ClassPrivateMethod cpm = new ClassPrivateMethod();
+
+        cpm.method01();
+        System.out.println("====================");
+        cpm.method02();
+        System.out.println("====================");
+        //cpm.method();
+    }
+}
+```
+
+### 构造器代码块
+
+```java
+public class ConstructorCodeBlock {
+    public ConstructorCodeBlock() {
+
+        /*System.out.println("你好");
+        System.out.println("我好");
+        System.out.println("大家好");*/
+        System.out.println("苗苗老师好");
+    }
+
+    public ConstructorCodeBlock(int num) {
+
+        /*System.out.println("你好");
+        System.out.println("我好");
+        System.out.println("大家好");*/
+        System.out.println("沙沙老师好");
+    }
+
+    public ConstructorCodeBlock (int a , int b) {
+        System.out.println("海江老师人生赢家");
+    }
+
+    {
+        System.out.println("你好");
+        System.out.println("我好");
+        System.out.println("大家好");
+    }
+}
+```
+
+```java
+/**
+ * 构造器代码块
+ *      位置:
+ *          在类中代码块外
+ *      格式:
+ *          {
+ *              所有构造器中相同的内容
+ *          }
+ *      特点:
+ *          1.构造器代码块优先于构造器中的显式代码执行
+ *          2.将所有构造器中相同的内容抽取到构造器代码块,在实例初始化过程中的第二阶段调用构造器代码块
+ */
+public class OOPDemo04 {
+    public static void main(String[] args) {
+        new ConstructorCodeBlock();
+
+        System.out.println("==============");
+
+        new ConstructorCodeBlock(1);
+
+        System.out.println("==============");
+
+        new ConstructorCodeBlock(1,2);
+    }
+}
+```
+
+### this关键字的第二种用法
+
+```java
+/**
+ * this关键字的第二种用法:
+ *      场景:
+ *          (子类的)构造器中
+ *      格式:
+ *          this(实参);
+ *      作用:
+ *          调用本类中其它的构造器完成对象成员的初始化操作
+ *      含义:
+ *          当构造器无法进行对象成员初始化时,通过this(实参)调用其它的构造器完成对象成员的初始化
+ */
+public class OOPDemo05 {
+    public static void main(String[] args) {
+        Student s1 = new Student();
+        System.out.println(s1.print());
+
+        System.out.println("====================");
+
+        Student s2 = new Student("张三");
+        System.out.println(s2.print());
+
+        System.out.println("====================");
+
+        Student s3 = new Student("李四", 18);
+        System.out.println(s3.print());
+
+    }
+}
+```
+
+```java
+public class Student {
+    private String name;
+    private int age;
+
+    public Student() {
+
+    }
+
+    public Student(String name) {
+        //this.name = name;
+        this(name,0);
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String print () {
+        return name + "=" + age;
+    }
+}
+```
+
+```java
+/**
+ * this关键字第二种用法的注意事项
+ *      1.this(实参)必须在构造器中的第一行,否则编译报错
+ *      2.一旦构造器中含有this(实参),该构造器不会进行实例成员的初始化操作(构造器中第一阶段和第二阶段做的事情不会执行)
+ */
+public class OOPDemo06 {
+    public static void main(String[] args) {
+        new Student();
+    }
+}
 
 ```
 
 ```java
+public class Student {
+    public Student() {
+        this(1);
+        System.out.println("无参构造器");
+
+    }
+
+    public Student (int a) {
+        this(1,2);
+        System.out.println("一个参数的构造器");
+    }
+
+    public Student (int a,int b) {
+        //实例成员的初始化
+        System.out.println("两个参数的构造器");
+    }
+
+    {
+        System.out.println("构造器代码块");
+    }
+}
+```
+
+## static关键字
+
+```java
+/**
+ * static关键字:
+ *      含义:
+ *          静态的,共享的
+ *      修饰:
+ *          成员变量,成员常量(暂不涉及),成员方法,成员内部类(暂不涉及),成员代码块
+ *      特点:
+ *          1.被static关键字修饰的内容不再属于对象,而是归属于类,会被这个类创建的所有对象所共享
+ *          2.被static关键字修饰的内容会随着类的加载而加载,只能加载唯一的一次
+ */
+public class StaticDemo01 {
+    public static void main(String[] args) {
+
+    }
+}
+```
+
+### 静态变量
+
+```java
+/**
+ * 静态变量:
+ *      含义:
+ *          被static关键字修饰的成员变量
+ *      格式:
+ *          修饰符 static 数据类型 变量名;
+ *      特点:
+ *          被static关键字修饰的成员变量不再属于对象,而是归属于类本身,会被这个类创建的所有对象共享
+ *      调用:
+ *          对象名.静态变量名;
+ *          类名.静态变量名;
+ */
+public class StaticDemo02 {
+    public static void main(String[] args) {
+       /* Student s1 = new Student("郭靖",18,"射雕");
+        Student s2 = new Student("黄蓉",16,"射雕");
+        Student s3 = new Student("洪七公",50,"射雕");*/
+
+        Student s1 = new Student("郭靖",18);
+        Student s2 = new Student("黄蓉",16);
+        Student s3 = new Student("洪七公",50);
+
+        Student.classroom = "射雕";
+
+        System.out.println(s1.print());
+        System.out.println(s2.print());
+        System.out.println(s3.print());
+    }
+}
+
 ```
 
 ```java
+public class Student {
+    private String name;
+    private int age;
+    /*private */static String classroom;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
+    }
+
+    public Student(String name, int age, String classroom) {
+        this.name = name;
+        this.age = age;
+        this.classroom = classroom;
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public Student() {
+    }
+
+    public String print () {
+        return name + "=" + age + "=" + classroom;
+    }
+}
+```
+
+![Alt text](java-note/image-8.png)
+
+### 三种变量的区别
+
+```java
+/**
+ * 静态变量:声明在类中代码块外,且含有static关键字修饰的成员变量
+ * 实例变量:声明在类中代码块外,且没有static关键字修饰的成员变量
+ * 局部变量:声明在代码块内或者方法声明上的变量
+ *
+ * 三种变量的区别
+ *      代码中的位置不同:
+ *          静态变量:类中代码块外
+ *          实例变量:类中代码块外
+ *          局部变量:代码块内或方法声明上(形参列表)
+ *      内存中的位置不同:
+ *          静态变量:
+ *              JDK7.0(包含)之前:方法区
+ *              JDK8.0(包含)之后:堆内存
+ *          实例变量:堆内存
+ *          局部变量:栈内存
+ *      变量是否含有默认值不同:
+ *          静态变量:含有默认值
+ *          实例变量:含有默认值
+ *          局部变量:没有默认值
+ *      代码中的作用域不同:
+ *          静态变量:所属类中
+ *          实例变量:所属类中(静态成员除外)
+ *          局部变量:所属方法中
+ *      内存中的生命周期不同:
+ *          静态变量:随着类的加载而加载,随着的类的回收而消失
+ *          实例变量:随着对象的创建而加载,随着对象的回收而消失
+ *          局部变量:随着方法的调用而加载,随着方法的出栈而消失
+ *      加载方式和次数不同
+ *          静态变量:随着类的加载而加载,因为类只会加载唯一的一次,也只加载唯一的一次
+ *          实例变量:随着对象的创建而加载,每创建一次对象就会加载一次
+ *          局部变量:随着方法的调用而加载,每调用一次方法就会加载一次
+ *      修饰符的使用不同
+ *          静态变量:程序中各种修饰符可以根据需求进行修饰
+ *          实例变量:程序中各种修饰符可以根据需求进行修饰
+ *          局部变量:只能使用final进行修饰
+ */
+public class StaticDemo03 {
+}
 ```
 
 ```java
+/**
+ * 编号自增小案例
+ */
+public class StaticDemo04 {
+    public static void main(String[] args) {
+        Student s1 = new Student("去病", 18);
+        Student s2 = new Student("卫小青", 18);
+        Student s3 = new Student("张小骞", 18);
+        Student s4 = new Student();
+        s4.setName("韩小信");
+        s4.setAge(18);
+
+        System.out.println(s1.print());
+        System.out.println(s2.print());
+        System.out.println(s3.print());
+        System.out.println(s4.print());
+    }
+}
 ```
 
 ```java
+public class Student {
+    private int id;
+    private String name;
+    private int age;
+    private static int num = 220704001;
+
+    {
+        this.id = num++;
+    }
+
+    public Student() {
+        //this.id = num++;
+    }
+
+    public Student(String name, int age) {
+        //this.id = num++;
+        this.name = name;
+        this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String print () {
+        return id + "=" + name + "=" + age;
+    }
+}
+
+```
+
+### 静态方法
+
+```java
+public class ArrayUtils {
+    //按照固定格式打印(byte[])
+    //按照固定格式打印(short[])
+    //按照固定格式打印(int[])
+    //......
+    //排序
+
+
+    private ArrayUtils() {
+    }
+
+    public static void print (int... arr) {
+        //非空校验
+        if (arr == null) {
+            System.out.println("程序有误:数组为null,无法进行打印");
+            return;
+        }
+
+        //特殊值判断
+        if (arr.length == 0) {
+            System.out.println("数组:[]");
+            return;
+        }
+
+        System.out.print("数组:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
 ```
 
 ```java
+/**
+ * 静态方法
+ *      含义:
+ *          被static修饰的成员方法
+ *      格式:
+ *          修饰符 static 返回类型 方法名 () {}
+ *      特点:
+ *          1.被static关键字修饰的成员方法不再属于对象,而是归属于类本身,会被这个类创建的所有对象共享
+ *          2.当创建一个对象只是为了使用里面大量的实例方法进行操作,和对象本身无关,导致对象本身在堆内存中一直驻留,浪费内存空间,
+ *          在实际应用过程中,可以将这些实例方法修饰成静态的,被static修饰的方法不再属于对象,而是归属于类本身,使用里面的工具方法
+ *          无需再进行对象的创建,直接通过类名即可访问.同时将构造器进行私有化
+ *      调用:
+ *          对象名.静态方法名(实参);
+ *          类名.静态方法名(实参);(推荐)
+ */
+public class StaticDemo05 {
+    public static void main(String[] args) {
+        //创建ArrayUtils工具类对象
+        //ArrayUtils au = new ArrayUtils();
+
+       /* au.print(11,22,33);
+        au.print(11,22,33,44);
+        au.print(11,22,33,44,55);*/
+
+        System.out.println("=======================");
+
+        ArrayUtils.print(11,22,33);
+        ArrayUtils.print(11,22,33,44);
+        ArrayUtils.print(11,22,33,44,55);
+    }
+}
 ```
 
 ```java
+/**
+ * 静态方法的注意事项:
+ *      1.静态方法随着类的加载而加载,而且只加载唯一的一次
+ *          静态方法的加载:进静态区,只有唯一的一次
+ *          静态方法的调用:进栈内存,可以调用很多次
+ *      2.静态方法可以通过类名调用,也可以通过对象名调用,更推荐使用类名进行调用
+ *      3.静态方法中不可以使用非静态成员
+ *      4.静态方法中不可以使用this关键字和super关键字
+ */
+public class StaticDemo06 {
+    public static void main(String[] args) {
+    }
+
+    public void method01() {
+        //实例方法中使用实例成员
+        method02();
+    }
+
+    public void method02() {
+        //实例方法中使用静态成员
+        method03();
+    }
+
+    public static void method03() {
+        //静态方法中使用静态成员
+        method04();
+    }
+
+    public static void method04() {
+        //静态方法中使用实例成员
+        //method01();
+    }
+}
+```
+
+### 静态代码块
+
+```java
+public class StaticCodeBlock {
+    int num = 10;
+
+
+    static {
+        //System.out.println(num);
+        //System.out.println(this);
+    }
+}
+
 ```
 
 ```java
+/**
+ * 静态代码块:
+ *      含义:
+ *          被static修饰的代码块
+ *      格式:
+ *          static {
+ *
+ *          }
+ *      目的:
+ *          1.封装工具类,提高部分代码加载时机(暂不涉及)
+ *          2.类和实例成员初始化过程的笔试题(暂不涉及)
+ *          3.给静态常量进行初始化赋值操作(暂不涉及)
+ *      注意:
+ *          1.静态代码块随着类的加载而加载,而且只加载唯一的一次
+ *          2.静态代码块中不可以使用非静态成员
+ *          3.静态方法中不可以使用this关键字和super关键字
+ */
+public class StaticDemo07 {
+    public static void main(String[] args) {
+
+    }
+}
+```
+
+### 设计模式和框架
+
+```java
+public class CEO {
+    private static CEO ceo = new CEO();
+
+    private CEO () {}
+
+    public static CEO getCEO() {
+        return ceo;
+    }
+}
+
 ```
 
 ```java
+/**
+ * 设计模式和框架
+ *      设计模式:解决某一类问题的固定的解决方案
+ *      框架:半成品项目
+ *
+ * 单例设计模式
+ *      含义:
+ *          创建唯一对象的解决方案
+ *      分类:
+ *          立即加载模式(饿汉式)
+ *          延迟加载模式(懒汉式)
+ *
+ * 立即加载模式
+ *      1.将创建唯一对象的类构造器进行私有化
+ *      2.在创建唯一对象的类中声明并初始化唯一对象
+ *      3.为了可以在外界进行访问,将其进行static修饰
+ *      4.为了唯一对象的安全性,将其进行private修饰
+ *      5.为了可以在外界进行访问,提供公共获取方式
+ *
+ */
+public class StaticDemo08 {
+    public static void main(String[] args) {
+        CEO ceo1 = CEO.getCEO();
+        System.out.println(ceo1);
+
+        CEO ceo2 = CEO.getCEO();
+        System.out.println(ceo2);
+
+        CEO ceo3 = CEO.getCEO();
+        System.out.println(ceo3);
+    }
+}
 ```
 
 ```java
+public class CEO {
+    private static CEO ceo;
+
+    private CEO () {}
+
+    public static CEO getCEO() {
+
+        if (ceo == null) {
+            ceo = new CEO();
+        }
+
+        return ceo;
+    }
+}
+
 ```
 
 ```java
+/**
+ * 立即加载模式的弊端:
+ *      部分场景中,不需要使用对象,但是可能加载该类,导致对象的创建,在一段时间内浪费堆内存中空间
+ *
+ * 延迟加载模式
+ *      1.将创建唯一对象的类构造器进行私有化
+ *      2.在创建唯一对象的类中声明唯一对象变量
+ *      3.为了可以在外界进行访问,将其进行static修饰
+ *      4.为了唯一对象的安全性,将其进行private修饰
+ *      5.为了可以在外界进行访问,提供公共获取方式,并且在第一次获取时创建唯一对象
+ */
+public class StaticDemo09 {
+}
+```
+
+## import关键字
+
+```java
+/**
+ * import关键字
+ *      含义:
+ *          导包
+ *      位置:
+ *          package后面,class前面
+ *      格式:
+ *          import 包名.类名;(推荐)
+ *          import 包名.*;(笔试实在没有办法时)
+ *      作用:
+ *          跨包使用类文件
+ */
+public class ImportDemo {
+    public static void main(String[] args) {
+        Student s = new Student();
+    }
+}
 ```
 
 ```java
+public class Person {
+    static {
+        System.out.println("Person");
+    }
+}
 ```
 
 ```java
+public class Student {
+    static {
+        System.out.println("Student");
+    }
+}
 ```
 
-```java
-```
+## API
 
 ```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
-```
-
-```java
+/**
+ * API(应用程序接口)
+ *      含义:
+ *          提供的类和接口
+ * Java API:
+ *      含义:
+ *          Java系统中提供的类和接口
+ *
+ * Java API文档:
+ *      含义:
+ *          查询Java系统中提供的类和接口的文档
+ *      关注点:
+ *          如果查询类:
+ *              类的特点
+ *              类的位置
+ *                  注意:如果是java.lang,无需进行导包
+ *              类的构造器
+ *              类的方法
+ *          如果查询接口:
+ *              接口的特点
+ *              接口的位置
+ *              接口的方法
+ *
+ */
+public class APIDemo {
+}
 ```
 
 ```java
