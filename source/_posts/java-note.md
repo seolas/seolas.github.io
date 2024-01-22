@@ -4,7 +4,7 @@ date: 2024-01-21 17:30:49
 tags: [java]
 ---
 
-# day01
+# Java基础
 
 ## HelloWorld
 
@@ -339,8 +339,6 @@ public class BasicDemo08 {
 ## 进制转换
 
 ![](java-note/image.png)
-
-# day02
 
 ## 类型的转换
 
@@ -1205,8 +1203,6 @@ public class OperatorDemo15 {
 	}
 }
 ```
-
-# day03
 
 ### 运算符的优先级
 
@@ -2667,6 +2663,8 @@ public class MethodDemo05 {
 }
 ```
 
+![Alt text](java-note/image-2.png)
+
 ```java
 /*
 	栈内存(本地方法栈)
@@ -3099,6 +3097,2072 @@ public class MethodDemo16 {
 	}
 	*/
 }
+```
+
+## 数组
+
+![Alt text](java-note/image-6.png)
+
+```java
+/**
+ * 数组:
+ *      含义:
+ *          在程序中存储同一种数据类型多个元素的固定容器
+ *      特点:
+ *          1.数组一旦初始化其长度是固定不变的
+ *          2.数组中存储的数据类型必须一致,否则编译报错
+ *          3.数组中存储的元素必须是多个(如果一个元素不存或者只存储一个元素,这样的数组也不会报错,只不过没有实际意义)
+ *
+ *
+ */
+public class ArrayDemo01 {
+}
+```
+
+### 数组的声明初始化
+
+```java
+/**
+ * 数组的声明初始化
+ *
+ *
+ * 数组的声明:
+ *      含义:
+ *          数组的定义
+ *      格式:
+ *          数据类型[] 数组名;(推荐)
+ *          数据类型 数组名[];
+ *
+ * 数组的初始化:
+ *      含义:
+ *          在内存中创建数组或者说给数组变量进行赋值
+ *      分类:
+ *          动态初始化:
+ *              在初始化数组时,只初始化数组的长度(大小),不会初始化具体的元素数据,JVM可以直接获取数组的长度
+ *          静态初始化
+ *              在初始化数组时,不会初始化数组的长度(大小),只初始化具体的元素数据,JVM可以间接获取数组的长度
+ *      格式:
+ *          动态初始化:
+ *              数据类型[] 数组名 = new 数据类型[数组长度];
+ *          静态初始化1:
+ *              数据类型[] 数组名 = new 数据类型[]{元素1,元素2,......,元素n};
+ *          静态初始化2:
+ *              数据类型[] 数组名 = {元素1,元素2,......,元素n};
+ *      解释:
+ *          数据类型[]:数组的数据类型
+ *          数据类型:数组中存储元素的数据类型
+ *          new:向内存申请并开辟内存空间
+ *          数组长度:数组中元素的个数
+ */
+public class ArrayDemo02 {
+    public static void main(String[] args) {
+        //数据类型[] 数组名;
+        int[] arr01;
+
+        //数据类型 数组名[];
+        int arr02[];
+
+        //数据类型[] 数组名 = new 数据类型[数组长度];
+        int[] arr03 = new int[3];
+
+        //数据类型[] 数组名 = new 数据类型[]{元素1,元素2,......,元素n};
+        int[] arr04 = new int[]{11,22,33};
+
+        //数据类型[] 数组名 = {元素1,元素2,......,元素n};
+        int[] arr05 = {11,22,33};
+    }
+}
+
+```
+
+```java
+
+/**
+ * 数组初始化的注意事项:
+ *      1.通过动态初始化数组时,数组的长度不能为负数,否则会发生非法数组长度异常(NegativeArraySizeException)
+ *      2.数组无法通过动静结合的方式进行初始化操作
+ *      3.数组中的元素支持数据类型转换
+ *      4.数组的静态初始化的简化版不可以先声明后初始化;
+ *          原因:直接声明的静态初始化简化版,JVM的编译器会根据数组名前面的数据类型进行自动代码补全操作(new 数据类型[]),一旦
+ *          先声明后静态初始化简化版,JVM的编译器无法直接获取到数组名前面的数据类型,无法提供代码自动补全操作,导致编译报错
+ *
+ */
+public class ArrayDemo03 {
+    public static void main(String[] args) {
+        //通过动态初始化数组时,数组的长度不能为负数,否则会发生非法数组长度异常(NegativeArraySizeException)
+        //int[] arr01 = new int[-3];
+
+        //数组无法通过动静结合的方式进行初始化操作
+        //int[] arr02 = new int[5]{11,22,33};
+
+        int[] arr03 = {11,22,33,'a'};
+        int[] arr04 = {11,22,33,(int)3.14};
+
+        //动态初始化
+        int[] arr05;
+        arr05 = new int[3];
+
+        //静态初始化1:
+        int[] arr06;
+        arr06 = new int[]{11,22,33};
+
+        //静态初始化2:
+        int[] arr07;
+        //arr07 = {11,22,33};
+    }
+}
+```
+
+### 数组的元素的访问
+
+```java
+
+/**
+ * 数组的元素的访问
+ *      需要通过数组的索引值进行访问
+ *
+ * 索引值:
+ *      含义:
+ *          JVM针对数组中元素进行的动态编号
+ *      特点:
+ *          数组的索引值从0开始,依次递增,一直到数组的长度-1
+ *      格式:
+ *          数组名[索引值]
+ *      注意:
+ *          1.在访问数组中元素时,提供索引值不能是非法或不存在的索引,否则会发生索引越界异常
+ *          2.长度为0的数组,不存在索引
+ */
+public class ArrayDemo04 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33};
+
+        System.out.println(arr.toString());//[I@1b6d3586,其实时人工模拟的地址值的字符串拼接(可以将其理解为地址值,但是这并不是真实的数据在内存中的地址)
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+
+        //修改数组中的元素
+        arr[0] = 100;
+        arr[2] = 300;
+
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+        //System.out.println(arr[-3]);
+    }
+}
+```
+
+### 数组长度的访问
+
+```java
+/**
+ * 数组长度的访问
+ *      格式:
+ *          数组名.length
+ */
+public class ArrayDemo05 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33,44,55};
+
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+
+        System.out.println("=======================");
+
+        for (int i = 0; i < 3; i++) {
+            System.out.println(arr[i]);
+        }
+
+        System.out.println("=======================");
+
+        System.out.println(arr.length);
+
+        System.out.println("=======================");
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+    }
+}
+```
+
+### 数组初始化的内存图解
+
+```java
+/**
+ * JVM内存的划分:
+ *      JDK6.0(包含)以前:
+ *          程序计数器(寄存器)
+ *          本地方法栈
+ *          虚拟机栈
+ *          堆
+ *          方法区
+ *      JDK8.0(包含)以后:JVM内存+元空间
+ *          程序计数器(寄存器)
+ *          本地方法栈
+ *          虚拟机栈
+ *          堆:方法区并入堆
+ *
+ * 程序计数器(寄存器):
+ *      作用:和计数器底层硬件有关,和开发没有直接联系,目前无需关注程序计数器
+ *
+ * 本地方法栈:
+ *      作用:存储正在运行的本地方法(被native关键字修饰,且没有方法实体的方法,其实就是调用C语言的函数)的内存
+ *
+ * 虚拟机栈:
+ *      作用:存储正在运行的Java方法的内存
+ *      特点:
+ *          1.方法的出栈是立即出栈
+ * 			2.方法进栈和出栈遵循"先进后出,后进先出"规则
+ *
+ * 方法区:
+ *      作用:存储需要使用到的字节码文件对象,方法,常量等的内存
+ *      特点:运行期间,使用java命令运行字节码文件,就是将字节码文件对象加载到方法区
+ *
+ * 堆:
+ *      作用:存储显式或隐式new出来的东西
+ *      特点:
+ *          1.堆内存中的每块区域都有独立的内存地址值
+ *          2.堆内存中的每块区域中的元素都有默认值(JVM的堆内存自动给其进行隐式初始化)
+ *              整数型     默认初始化值:0
+ *              浮点型     默认初始化值:0.0
+ *              字符型     默认初始化值:'\u0000'(Unicode码表中第一个字符)
+ *              布尔型     默认初始化值:false
+ *              引用型     默认初始化值:null
+ *          3.堆内存中有一块独立的内存区域,该区域存储"垃圾回收器对象"
+ *              作用:垃圾回收器对象可以理解为生活中的"扫地机器人",负责清理堆内存中的垃圾数据,在堆内存中new出来的内存区域在和
+ *              其它内存区域没有任何关联时,JVM会将这块内存区域标记为垃圾数据,等待垃圾回收器对象的回收,因为垃圾回收器对象会按
+ *              照自己的清理内存的轨迹进行运动,当垃圾回收器对象扫描到该"垃圾数据"时,该内存区域才在堆内存中彻底消失
+ *
+ * 名词解释:
+ *      创建:在堆内存中进行空间的申请和开辟
+ *      加载:将内容加载到堆内存或方法区的过程
+ *
+ */
+public class ArrayDemo06 {
+    public static void main(String[] args) {
+        int[] arr01 = new int[3];
+        System.out.println(arr01[0]);
+
+        double[] arr02 = new double[3];
+        System.out.println(arr02[0]);
+
+        char[] arr03 = new char[3];
+        System.out.println(arr03[0]);
+
+        boolean[] arr04 = new boolean[3];
+        System.out.println(arr04[0]);
+
+        String[] arr05 = new String[3];
+        System.out.println(arr05[0]);
+    }
+}
+```
+
+```java
+/**
+ * 数组动态初始化的内存图解
+ */
+public class ArrayDemo07 {
+    public static void main(String[] args) {
+        int[] arr = new int[3];
+
+        System.out.println(arr);
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+
+        arr[0] = 100;
+        arr[2] = 300;
+
+        System.out.println(arr);
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+    }
+}
+```
+
+![Alt text](java-note/image-3.png)
+
+```java
+/**
+ * 数组静态初始化的内存图解
+ */
+public class ArrayDemo08 {
+    public static void main(String[] args) {
+        int[] arr = {11,22,33};
+
+        System.out.println(arr);
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+    }
+}
+
+```
+
+![Alt text](java-note/image-4.png)
+
+```java
+/**
+ * 两个数组指向同一地址值的内存图解
+ */
+public class ArrayDemo09 {
+    public static void main(String[] args) {
+        int[] arr1 = {11,22,33};
+
+        System.out.println(arr1);
+        System.out.println(arr1[0]);
+        System.out.println(arr1[1]);
+        System.out.println(arr1[2]);
+
+        int[] arr2 = arr1;
+
+        System.out.println(arr2);
+        System.out.println(arr2[0]);
+        System.out.println(arr2[1]);
+        System.out.println(arr2[2]);
+
+        arr2[0] = 100;
+        arr2[2] = 300;
+
+        System.out.println(arr2);
+        System.out.println(arr2[0]);
+        System.out.println(arr2[1]);
+        System.out.println(arr2[2]);
+
+        System.out.println(arr1);
+        System.out.println(arr1[0]);
+        System.out.println(arr1[1]);
+        System.out.println(arr1[2]);
+    }
+}
+```
+
+![Alt text](java-note/image-5.png)
+
+### 数组的应用
+
+```java
+/**
+ * 数组的应用:
+ *      基础应用:针对数组中元素进行查询操作,但不会改变元素在数组中的索引位置
+ *          举例:求数组元素的累加和,求数组元素最值,......
+ *      高级应用:针对数组中元素的索引位置进行有规则的改变,不依赖其它数组
+ *          举例:数组的反转,数组的排序
+ *      综合应用:针对数组和方法进行综合练习
+ *          举例:二分法,数组的动态扩容,动态插入,动态删除
+ */
+public class ArrayDemo10 {
+}
+
+```
+
+```java
+/**
+ * 按照固定格式打印数组中元素
+ *      固定格式:
+ *          数组:[元素1, 元素2, ......, 元素n]
+ */
+public class ArrayDemo11 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33,44,55};
+
+        System.out.print("数组:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            //判断当前索引是否为最大索引
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
+
+```
+
+```java
+/**
+ * 获取数组中所有元素的累加和
+ */
+public class ArrayDemo12 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33};
+
+        //声明并初始化求和变量
+        int sum = 0;
+
+        //遍历数组
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+
+        //打印求和变量
+        System.out.println("sum = " + sum);
+    }
+}
+
+```
+
+```java
+/**
+ * 获取数组中所有元素的最大值
+ */
+public class ArrayDemo13 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {5,15,2000,10000,100,4000};
+
+        //声明并初始化最大值变量
+        int max = arr[0];
+
+        //遍历数组
+        for (int i = 1; i < arr.length; i++) {
+            if (max < arr[i]) {
+                max = arr[i];
+            }
+        }
+
+        //打印最大值变量
+        System.out.println("max = " + max);
+    }
+}
+
+```
+
+```java
+/**
+ * 分析以下需求，并用代码实现：
+ *  （1）在编程竞赛中，有10位评委为参赛的选手打分，分数分别为：5，4，6，8，9，0，1，2，7，3
+ *  （2）求选手的最后得分（去掉一个最高分和一个最低分后其余8位评委打分的平均值）
+ *
+ */
+public class ArrayDemo01 {
+    public static void main(String[] args) {
+        //声明并初始化数组保存评委所打的分数
+        int[] arr = {5,4,6,8,9,0,1,2,7,3};
+        
+        //声明并初始化所有评委打的总分,最高分,最低分
+        int sum = arr[0];
+        int max = arr[0];
+        int min = arr[0];
+
+        for (int i = 1; i < arr.length; i++) {
+            sum += arr[i];
+
+            if (max < arr[i]) {
+                max = arr[i];
+            }
+
+            if (min > arr[i]) {
+                min = arr[i];
+            }
+        }
+        
+        //获取平均分
+        double avg = (sum - max - min) * 1.0 / (arr.length - 2);
+        
+        //打印平均分
+        System.out.println("avg = " + avg);
+    }
+}
+```
+
+```java
+/**
+ * 获取指定元素在数组中出现的第一次索引
+ */
+public class ArrayDemo02 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {5,4,6,8,9,0,1,2,7,3,3,5,1,5,3,6,1};
+
+        //声明并初始化指定元素
+        int num = 10;
+
+        //声明并初始化索引变量
+        int index = -1;
+
+        //遍历数组
+        for (int i = 0; i < arr.length; i++) {
+            if (num == arr[i]) {
+                index = i;
+                break;
+            }
+        }
+
+        //进行索引校验
+        if (index == -1) {
+            System.out.println("指定元素在数组中不存在");
+        } else {
+            System.out.println("指定元素在数组中索引为:" + index);
+        }
+    }
+}
+```
+
+### 数组的反转
+
+```java
+/**
+ * 数组的反转:
+ *      含义:
+ *          将数组中首尾对应的元素按照反转规则进行交换
+ *      分析:
+ *          1.确认待交换元素的首次索引位置
+ *              int i = 0
+ *              int j = arr.length - 1
+ *          2.索引变量移动规则
+ *              i++
+ *              j--
+ *          3.交换元素步骤
+ *              int temp = arr[i];
+ *              arr[i] = arr[j];
+ *              arr[j] = temp;
+ *          4.交换的规则条件:
+ *              当数组长度为奇数个时:
+ *                  i < j
+ *              当数组长度为偶数个时:
+ *                  i < j
+ */
+public class ArrayDemo03 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33,44,55};
+
+        System.out.print("反转前:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+
+        for (int i = 0 , j = arr.length - 1 ; i < j; i++ , j--) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+
+        System.out.print("反转后:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
+```
+
+```java
+/**
+ * 数组反转的优化:
+ *      1.确定索引变量i和j之间的关系
+ *          i + j = arr.length - 1
+ *              j = arr.length - 1 - i
+ *      2.优化表达式i < arr.length - 1 - i
+ *          i + i < arr.length - 1
+ *          2 * i < arr.length - 1
+ *              i < (arr.length - 1)/2
+ *              i < arr.length/2 - 1/2
+ *              i < arr.length/2
+ */
+public class ArrayDemo04 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33,44,55};
+
+        System.out.print("反转前:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+
+        for (int i = 0 ; i < arr.length/2; i++) {
+            int temp = arr[i];
+            arr[i] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = temp;
+        }
+
+        System.out.print("反转后:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
+```
+
+### 数组的排序
+
+```java
+/**
+ * 数组的排序
+ *      含义:
+ *          按照指定的规则将数组中元素进行升序或降序操作
+ *      分类:
+ *          冒泡排序
+ *          选择排序
+ *          插入排序
+ *          希尔排序
+ *          快速排序
+ *          基数排序
+ *          归并排序
+ *          ......
+ *
+ * 冒泡排序:
+ *      含义:
+ *          查找最大值的排序
+ */
+public class ArrayDemo05 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {5,4,6,8,9,0,1,2,7,3};
+
+        System.out.print("排序前:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+
+        System.out.println("============================================");
+
+        System.out.println("数组的排序操作");
+        
+        //外层循环变量:获取几次最大值并交换至右侧
+        for (int count = 1; count < arr.length; count++) {
+            //内层循环变量:获取一次最大值并交换至右侧需要几次判断
+            //[5, 4, 6, 8, 9, 0, 1, 2, 7, 3]
+            for (int i = 0; i < arr.length - count; i++) {
+                //比较两个相邻元素
+                if (arr[i] > arr[i+1]) {
+                    int temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                }
+            }
+        }
+
+        System.out.println("============================================");
+
+        System.out.print("排序后:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
+```
+
+```java
+/**
+ * 冒泡排序的优化:
+ *      方式:减少交换次数
+ */
+public class ArrayDemo06 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {5,4,6,8,9,0,1,2,7,3};
+
+        System.out.print("排序前:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+
+        System.out.println("============================================");
+
+        System.out.println("数组的排序操作");
+        
+        //外层循环变量:获取几次最大值并交换至右侧
+        for (int count = 1; count < arr.length; count++) {
+            /*
+                 数组:[5, 4, 6, 8, 9, 0, 1, 2, 7, 3]
+                 第1次遍历时,需要将最大值交换至索引9(arr.length - 1)处
+                 第2次遍历时,需要将最大值交换至索引8(arr.length - 2)处
+                 第3次遍历时,需要将最大值交换至索引7(arr.length - 3)处
+                 第4次遍历时,需要将最大值交换至索引6(arr.length - 4)处
+                 第5次遍历时,需要将最大值交换至索引5(arr.length - 5)处
+                 第6次遍历时,需要将最大值交换至索引4(arr.length - 6)处
+                 第7次遍历时,需要将最大值交换至索引3(arr.length - 7)处
+                 第8次遍历时,需要将最大值交换至索引2(arr.length - 8)处
+                 第9次遍历时,需要将最大值交换至索引1(arr.length - 9)处
+            */
+            //声明并初始化此次遍历的最大值待交换的索引位置
+            int maxNumIndex = arr.length - count;
+
+            //内层循环变量:获取一次最大值至右侧需要几次判断
+            for (int i = 0; i < arr.length - count; i++) {
+                if (arr[maxNumIndex] < arr[i]) {
+                    maxNumIndex = i;
+                }
+            }
+
+            //判断最大值索引位置有没有改变
+            if (maxNumIndex != arr.length - count) {
+                int temp = arr[maxNumIndex];
+                arr[maxNumIndex] = arr[arr.length - count];
+                arr[arr.length - count] = temp;
+            }
+        }
+
+        System.out.println("============================================");
+
+        System.out.print("排序后:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
+```
+
+冒泡排序
+
+![冒泡排序](java-note/sort-1.gif)
+
+(简单)选择排序
+
+![(简单)选择排序](java-note/sort-2.gif)
+
+(直接)插入排序
+
+![(直接)插入排序](java-note/sort-3.gif)
+
+希尔排序
+
+![希尔排序](java-note/sort-4.gif)
+
+快速排序
+
+![快速排序](java-note/sort-5.gif)
+
+基数排序
+
+![基数排序](java-note/sort-6.gif)
+
+计数排序
+
+![计数排序](java-note/sort-7.gif)
+
+归并排序
+
+![归并排序](java-note/sort-8.gif)
+
+堆排序
+
+![堆排序](java-note/sort-9.gif)
+
+
+### 可变参数
+
+```java
+/**
+ * 方法参数的特点:
+ *      当方法的形式参数是基本类型时:
+ *          1.参数传递的是数据的数据值
+ *          2.形式参数数据值的改变,不会影响实际参数的数据值
+ *      当方法的形式参数是引用类型时:
+ *          1.参数传递的是数据的地址值
+ *          2.形式参数地址值的改变,不会影响实际参数的地址值
+ *          3.形式参数地址值不会改变,形式参数地址值中的内容改变,会影响实际参数地址值中的内容
+ */
+public class ArrayDemo07 {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        System.out.println("a1 = " + a);
+        System.out.println("b1 = " + b);
+        System.out.println("=================");
+        method01(a,b);
+        System.out.println("=================");
+        System.out.println("a4 = " + a);
+        System.out.println("b4 = " + b);
+
+        System.out.println("=======================================");
+
+        int[] arr = new int[3];
+        System.out.println("arr1 = " + arr);
+        System.out.println("=================");
+        method02(arr);
+        System.out.println("=================");
+        System.out.println("arr4 = " + arr);
+
+        System.out.println("=======================================");
+
+        arr = new int[]{11,22,33};
+        System.out.println("arr1 = " + arr);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+
+        System.out.println("=================");
+
+        method03(arr);
+
+        System.out.println("=================");
+
+        System.out.println("arr4 = " + arr);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+
+    }
+
+    public static void method03 (int[] arr) {
+        System.out.println("arr2 = " + arr);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+
+        System.out.println("=================");
+
+        arr[0] = 100;
+        arr[2] = 300;
+
+        System.out.println("arr3 = " + arr);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+    }
+
+
+    public static void method02 (int[] arr) {
+        System.out.println("arr2 = " + arr);
+        System.out.println("=================");
+
+        arr = new int[5];
+
+        System.out.println("arr3 = " + arr);
+    }
+
+    public static void method01 (int a , int b) {
+        System.out.println("a2 = " + a);
+        System.out.println("b2 = " + b);
+        System.out.println("=================");
+
+        a = b;
+        b += a;
+
+        System.out.println("a3 = " + a);
+        System.out.println("b4 = " + b);
+    }
+}
+```
+
+```java
+/**
+ * 可变参数(JDK5.0)
+ *      含义:
+ *          在程序中,以实参为元素进行隐式静态初始化的数组
+ *      格式:
+ *          数据类型... 可变参数名
+ *      注意:
+ *          1.当方法除外可变参数外还有其他参数时,需要将可变参数声明在形参列表的最后一个位置,否则编译报错
+ *          2.一个方法最多只能有一个可变参数
+ */
+public class ArrayDemo08 {
+    public static void main(String[] args) {
+        method();
+        method(11);
+        method(11,22);
+        method(11,22,33);
+        method(11,22,33,44);
+        method(11,22,33,44,55);
+
+        System.out.println("=======================");
+
+        show(11,22,33,44,55);
+    }
+
+    public static void show (double num,int... arr ) {}
+
+    public static void method (int... arr) {
+        System.out.println(arr);
+
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+    }
+}
+```
+
+```java
+/**
+ * 方法参数的健壮性判断
+ */
+public class ArrayDemo09 {
+    public static void main(String[] args) {
+        printArr(new int[]{});
+
+        System.out.println("=====================");
+
+        getNum(9, null);
+    }
+
+    public static void printArr (int... arr) {
+        //非空判断
+        if (arr == null) {
+            System.out.println("程序报错:数组不能为空");
+            return;
+        }
+
+        //特殊数据判断
+        if (arr.length == 0) {
+            System.out.println("数组:[]");
+            return;
+        }
+
+        System.out.print("数组:[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+
+    public static int getNum (int index,int... arr) {
+        //非空判断
+        if (arr == null) {
+            System.out.println("程序报错:数组不能为空");
+            return 0;
+        }
+
+        //索引校验
+        if (index < 0 || index >= arr.length) {
+            System.out.println("程序报错:索引非法或索引不存在");
+            return 0;
+        }
+
+        return arr[index];
+    }
+}
+
+```
+
+```java
+/**
+ * 通过方法完成二分查找法(折半查找法)
+ *      需求:
+ *          获取指定元素在数组中出现的第一次索引
+ *      含义:
+ *          查找元素时,不断获取待查找范围中间的元素,从而可以快速找到元素所在的位置
+ *      前提:
+ *          如果使用二分查找法必须保证数组中的元素是升序或降序
+ */
+public class ArrayDemo10 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {2,5,7,8,10,15,18,20,22,25,28};//数组必须是有序的
+
+        //声明并初始化指定元素
+        int num = 18;
+
+        int index = getIndex(arr, num);
+
+        //进行索引校验
+        if (index == -1) {
+            System.out.println("指定元素在数组中不存在");
+        } else {
+            System.out.println("指定元素在数组中索引为:" + index);
+        }
+    }
+
+    public static int getIndex(int[] arr, int num) {
+
+        //声明并初始化索引变量
+        int index = -1;
+
+        //非空校验
+        if (arr == null) {
+            System.out.println("程序报错:数组不能为空");
+            return index;
+        }
+
+        //声明并初始化待查找元素的索引范围变量
+        int start = 0;
+        int end = arr.length - 1;
+
+        //声明并初始化中间位置的索引变量
+        int mid = (start + end) / 2;
+
+        //考虑不知道多少次进行对折,选择while循环
+        while (start <= end) {
+            if (num < arr[mid]) {
+                end = mid - 1;
+            } else if (num > arr[mid]) {
+                start = mid + 1;
+            } else {
+                index = mid;
+                break;
+            }
+
+            mid = (start + end) / 2;
+        }
+
+        return index;
+    }
+}
+```
+
+### 数组的动态操作
+
+```java
+/**
+ * 数组的动态操作
+ *      动态扩容:
+ *          将指定的元素存储至数组的结尾处
+ *      动态删除
+ *          根据指定的索引删除数组中对应位置的元素
+ *      动态插入
+ *          将指定的元素存储至数组中指定的索引位置处
+ */
+public class ArrayDemo11 {
+    public static void main(String[] args) {
+        //声明并初始化数组
+        int[] arr = {11,22,33};
+
+        //动态扩容
+        System.out.print("数组动态扩容前:");
+        print(arr);
+
+        arr = add(arr,44);
+
+        System.out.print("数组动态扩容后:");
+        print(arr);
+
+        System.out.println("==========================");
+
+        //动态插入
+        System.out.print("数组动态插入前:");
+        print(arr);
+
+        arr = insert(arr,2,55);
+
+        System.out.print("数组动态插入后:");
+        print(arr);
+
+        System.out.println("==========================");
+
+        //动态删除
+        System.out.print("数组动态删除前:");
+        print(arr);
+
+        arr = remove(arr,2);
+
+        System.out.print("数组动态删除后:");
+        print(arr);
+    }
+
+    /*
+        数组动态删除操作的两个明确:
+            返回类型:int[]
+            形参列表:int[] oldArr , int index
+    */
+    public static int[] remove (int[] oldArr , int index) {
+        //非空校验
+        if (oldArr == null) {
+            System.out.println("程序错误:数组不能为空");
+            return oldArr;
+        }
+
+        //索引校验
+        if (index < 0 || index >= oldArr.length) {
+            System.out.println("程序错误:索引错误或非法");
+            return oldArr;
+        }
+
+        //根据原数组创建新数组
+        int[] newArr = new int[oldArr.length - 1];
+
+        //针对新旧数组进行数据的迁移
+        for (int i = 0; i < newArr.length; i++) {
+            /*
+                原数组:[11,22,33]
+                新数组:[0,0]
+                如果index=0时
+                    原数组索引1上的数据==>新数组索引0位置
+                    原数组索引2上的数据==>新数组索引1位置
+                如果index=1时
+                    原数组索引0上的数据==>新数组索引0位置
+                    原数组索引2上的数据==>新数组索引1位置
+                如果index=2时
+                    原数组索引0上的数据==>新数组索引0位置
+                    原数组索引1上的数据==>新数组索引1位置
+            */
+            if (i < index) {
+                //等索引位置迁移
+                newArr[i] = oldArr[i];
+            } else {
+                //错索引位置迁移
+                newArr[i] = oldArr[i+1];
+            }
+        }
+
+        return newArr;
+    }
+
+    /*
+        数组动态插入操作的两个明确:
+            返回类型:int[]
+            形参列表:int[] oldArr , int index , int num
+    */
+    public static int[] insert (int[] oldArr , int index , int num) {
+        //非空校验
+        if (oldArr == null) {
+            System.out.println("程序错误:数组不能为空");
+            return oldArr;
+        }
+
+        //索引校验
+        if (index < 0 || index >= oldArr.length) {
+            System.out.println("程序错误:索引错误或非法");
+            return oldArr;
+        }
+
+        //根据原来的数组创建新数组
+        int[] newArr = new int[oldArr.length + 1];
+
+        //进行新旧数组的数据迁移
+        for (int i = 0; i < oldArr.length; i++) {
+            /*
+                原数组:[11,22,33]
+                新数组:[0,0,0,0]
+                如果index=0时
+                    原数组索引0上的数据==>新数组索引1位置
+                    原数组索引1上的数据==>新数组索引2位置
+                    原数组索引2上的数据==>新数组索引3位置
+                如果index=1时
+                    原数组索引0上的数据==>新数组索引0位置
+                    原数组索引1上的数据==>新数组索引2位置
+                    原数组索引2上的数据==>新数组索引3位置
+                如果index=2时
+                    原数组索引0上的数据==>新数组索引0位置
+                    原数组索引1上的数据==>新数组索引1位置
+                    原数组索引2上的数据==>新数组索引3位置
+            */
+            if (i < index) {
+                //等索引位置迁移
+                newArr[i] = oldArr[i];
+            } else {
+                //错索引位置迁移
+                newArr[i+1] = oldArr[i];
+            }
+        }
+
+        //需要将指定元素存储至指定索引位置处
+        newArr[index] = num;
+
+        return newArr;
+    }
+
+    /*
+        数组动态扩容操作的两个明确:
+            返回类型:int[]
+            形参列表:int[] oldArr , int num
+    */
+    public static int[] add (int[] oldArr , int num) {
+        //非空校验
+        if (oldArr == null) {
+            System.out.println("程序操作:数组不能为空");
+            return oldArr;
+        }
+
+        //根据原来的数组创建新数组
+        int[] newArr = new int[oldArr.length + 1];
+
+        //进行新旧数组的数据迁移
+        for (int i = 0; i < oldArr.length; i++) {
+            /*
+                原数组:[11,22,33]
+                新数组:[0,0,0,0]
+                原数组索引0上的数据==>新数组索引0位置
+                原数组索引1上的数据==>新数组索引1位置
+                原数组索引2上的数据==>新数组索引2位置
+            */
+            //等索引位置迁移
+            newArr[i] = oldArr[i];
+        }
+
+        //将num存储至数组中最后一个位置处
+        newArr[newArr.length - 1] = num;
+
+        return newArr;
+    }
+
+    public static void print (int[] arr) {
+        //非空校验
+        if (arr == null) {
+            System.out.println("程序错误:数组不能为空");
+            return;
+        }
+
+        //特殊值校验
+        if (arr.length == 0) {
+            System.out.println("数组:[]");
+            return;
+        }
+
+        System.out.print("[");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                System.out.println(arr[i] + "]");
+            } else {
+                System.out.print(arr[i] + ", ");
+            }
+        }
+    }
+}
+```
+
+### 多维数组
+
+```java
+/**
+ * 多维数组:
+ *      含义:
+ *          数组中的元素依然是数组的数组
+ *      分类:
+ *          二维数组:一维数组中的元素依然是一维数组的数组
+ *          三维数组:一维数组中的元素依然是二维数组的数组
+ *          四维数组
+ *          五维数组
+ *          ......
+ *
+ * 二维数组:
+ *      声明:
+ *          数据类型[][] 数组名;(推荐)
+ *          数据类型 数组名[][];
+ *          数据类型[] 数组名[];
+ *      初始化:
+ *          动态初始化
+ *              格式1:初始化二维数组的同时,初始化里面的每个一维数组
+ *                  数据类型[][] 数组名 = new 数据类型[x][y];
+ *                  x:二维数组的长度
+ *                  y:一维数组的长度
+ *              格式2:初始化二维数组的同时,不会初始化里面的一维数组
+ *                  数据类型[][] 数组名 = new 数据类型[x][];
+ *          静态初始化
+ *              格式1:
+ *                  数据类型[][] 数组名 = new 数据类型[][]{new 数据类型[]{元素1,元素2,......,元素n},new 数据类型[]{元素1,元素2,......,元素n},......,new 数据类型[]{元素1,元素2,......,元素n}};
+ *              格式2:
+ *                  数据类型[][] 数组名 = {new 数据类型[]{元素1,元素2,......,元素n},new 数据类型[]{元素1,元素2,......,元素n},......,new 数据类型[]{元素1,元素2,......,元素n}};
+ *              格式3:
+ *                  数据类型[][] 数组名 = new 数据类型[][]{{元素1,元素2,......,元素n},{元素1,元素2,......,元素n},......,{元素1,元素2,......,元素n}};
+ *              格式4:
+ *                  数据类型[][] 数组名 = {{元素1,元素2,......,元素n},{元素1,元素2,......,元素n},......,{元素1,元素2,......,元素n}};
+ */
+public class ArrayDemo12 {
+    public static void main(String[] args) {
+        //二维数组的声明
+        int[][] arr1;
+        int arr2[][];
+        int[] arr3[];
+
+        //动态初始化1:数据类型[][] 数组名 = new 数据类型[x][y];
+        int[][] arr4 = new int[3][2];//4
+
+        //动态初始化2:数据类型[][] 数组名 = new 数据类型[x]y];
+        int[][] arr5 = new int[3][];//1
+
+        //静态初始化1:数据类型[][] 数组名 = new 数据类型[][]{new 数据类型[]{元素1,元素2,......,元素n},new 数据类型[]{元素1,元素2,......,元素n},......,new 数据类型[]{元素1,元素2,......,元素n}};
+        int[][] arr6 = new int[][]{new int[]{11,22,33},new int[]{44,55},new int[]{66,77,88,99}};//4
+
+        //静态初始化2:数据类型[][] 数组名 = {new 数据类型[]{元素1,元素2,......,元素n},new 数据类型[]{元素1,元素2,......,元素n},......,new 数据类型[]{元素1,元素2,......,元素n}};
+        int[][] arr7 = {new int[]{11,22,33},new int[]{44,55},new int[]{66,77,88,99}};//4
+
+        //静态初始化3:数据类型[][] 数组名 = new 数据类型[][]{{元素1,元素2,......,元素n},{元素1,元素2,......,元素n},......,{元素1,元素2,......,元素n}};
+        int[][] arr8 = new int[][]{{11,22,33},{44,55},{66,77,88,99}};//4
+
+        //静态初始化4:数据类型[][] 数组名 = {{元素1,元素2,......,元素n},{元素1,元素2,......,元素n},......,{元素1,元素2,......,元素n}};
+        int[][] arr9 = {{11,22,33},{44,55},{66,77,88,99}};//4
+    }
+}
+```
+
+### 二维数组的元素访问和遍历
+
+```java
+/**
+ * 二维数组的元素访问和遍历
+ *      格式:
+ *          数组名[x][y]
+ *      解释:
+ *          x:元素所在一维数组在二维数组中的索引
+ *          y:元素在一维数组中的索引
+ */
+public class ArrayDemo13 {
+    public static void main(String[] args) {
+        //声明并初始化二维数组
+        int[][] arr = {{11,22,33},{44,55},{66,77,88,99}};
+        System.out.println(arr);
+        System.out.println(arr[0]);
+        System.out.println(arr[0][0]);
+        System.out.println(arr[0][1]);
+        System.out.println(arr[0][2]);
+        System.out.println(arr[1]);
+        System.out.println(arr[1][0]);
+        System.out.println(arr[1][1]);
+        System.out.println(arr[2]);
+        System.out.println(arr[2][0]);
+        System.out.println(arr[2][1]);
+        System.out.println(arr[2][2]);
+        System.out.println(arr[2][3]);
+
+        System.out.println("====================================");
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.println(arr[i][j]);
+            }
+        }
+    }
+}
+
+```
+
+```java
+public class ArrayDemo14 {
+    public static void main(String[] args) {
+        String[][] employees = {
+                {"10", "1", "段誉", "22", "3000"},
+                {"13", "2", "令狐冲", "32", "18000", "15000", "2000"},
+                {"11", "3", "任我行", "23", "7000"},
+                {"11", "4", "张三丰", "24", "7300"},
+                {"12", "5", "周芷若", "28", "10000", "5000"},
+                {"11", "6", "赵敏", "22", "6800"},
+                {"12", "7", "张无忌", "29", "10800","5200"},
+                {"13", "8", "韦小宝", "30", "19800", "15000", "2500"},
+                {"12", "9", "杨过", "26", "9800", "5500"},
+                {"11", "10", "小龙女", "21", "6600"},
+                {"11", "11", "郭靖", "25", "7100"},
+                {"12", "12", "黄蓉", "27", "9600", "4800"}
+        };
+
+        System.out.println("员工类型\t\t编号\t姓名\t\t年龄\t工资\t\t奖金\t\t股票");
+
+        for (int i = 0; i < employees.length; i++) {
+            String type = employees[i][0];
+            switch (type) {
+                case "10":
+                    System.out.print("普通员工");
+                    break;
+                case "11":
+                    System.out.print("程序员");
+                    break;
+                case "12":
+                    System.out.print("设计师");
+                    break;
+                case "13":
+                    System.out.print("架构师");
+                    break;
+                default:
+                    System.out.print("暂无该岗位");
+                    break;
+            }
+
+            for (int j = 1; j < employees[i].length; j++) {
+                System.out.print("\t\t" + employees[i][j]);
+            }
+
+            System.out.println();
+        }
+    }
+}
+```
+
+## 面向对象
+
+```java
+/**
+ * OOP(Object Oriented Programming)
+ *      面向对象程序设计(核心:设计)
+ *
+ * 面向对象思想的分类:
+ *      第一阶段:面向对象基础思想(JavaSE阶段,JDBC,Web阶段),掌握时间:前1个月
+ *      第二阶段:面向接口思想(Web阶段,框架,项目),掌握时间:前6个月
+ *      第三阶段:面向切面思想(Spring框架源码),掌握时间:至少5-8年
+ *
+ * 面向过程思想:
+ *      代表语言:C语言
+ *      核心单位:函数(其实就是Java中方法)
+ *      思想体现:比喻"执行者"身份,强调的是"过程",偏重事情"怎么做"
+ *
+ * 面向对象思想:
+ *      代表语言:Java语言
+ *      核心单位:类
+ *      思想体现:比喻"指挥者"身份,强调的是"对象",偏重事情"找谁做"
+ *
+ * 思想的实际应用
+ *      如果解决一些较小的问题,往往选择"面向过程思想";
+ *      如果解决一些较大的问题,往往选择"面向对象思想";
+ *      无论是面向过程思想还是面向对象思想没有好坏之分,都是人们解决问题的思考习惯;
+ *
+ * 面向对象三大特征:
+ *      封装,继承,多态
+ */
+public class OOPDemo01 {
+}
+```
+
+### 类和对象
+
+```java
+/**
+ * 类和对象
+ *
+ * 类:
+ *      含义:
+ *          事物在程序中抽象的表现形式
+ *      举例:
+ *          人类,猫类,......
+        属性:事物的属性信息
+ *          人类:姓名,年龄,身份证号,地址,性别,.......
+ *      行为:事物的行为动作
+ *          人类:吃,睡,喝,玩,工作,学习,.......
+ *
+ * 对象:
+ *      含义:
+ *          是这一类事物的具体体现
+ *      属性:
+ *          人类:蒋小苗,18,123456789123456789,陕西西安雁塔和发智能大厦,女
+ *      行为:
+ *          人类:
+ *              怎么吃,怎么睡,怎么喝,怎么玩,怎么工作,怎么学习......
+ *
+ * 类与对象的关系:
+ *      类是对象的抽象,模版
+ *      对象是类的实例,实体
+ *      对象是通过类进行创建,先有类,后有对象
+ */
+public class OOPDemo02 {
+}
+```
+
+```java
+/**
+ * 类的分类:
+ *      1.API系统中提供好的类
+ *      2.程序员自行设计类(自定义类)
+ *
+ * 类的设计
+ *      步骤:
+ *          1.根据事物的属性和行为设计最基础的"模版类"
+ *          2.在模版类的基础上添加封装思想
+ *          3.根据实际需求,加入构造器,完成最基础的JavaBean标准类的设计
+ *          4.根据实际需求,加入静态的概念
+ *          5.根据实际需求,加入继承思想
+ *          6.根据实际需求,加入抽象概念
+ *          7.根据实际需求,加入"最终"概念
+ *          8.根据实际需求,加入接口概念
+ *          9.根据实际需求,加入内部类的概念
+ *          10.根据实际需求,加入枚举类的概念
+ *          11.根据实际需求,加入注解概念
+ *          12.根据实际需求,加入构造器代码块
+ *          13.根据实际需求,加入静态代码块
+ *      成员:类作为模版的一部分
+ *          字段(成员量)
+ *          成员方法
+ *          成员内部类
+ *      内容:写在类中,但不会作为模块的一部分,只作为工具进行使用
+ *          构造器
+ *          构造器代码块
+ *          静态代码块
+ *
+ *
+ * 类的成员
+ *      成员量(属性)
+ *          含义:类中成员变量和成员常量的统称
+ *      成员方法(行为)
+ *          含义:类中实例方法和静态方法的统称
+ *      成员内部类(暂不涉及)
+ *
+ * 成员量:
+ *      成员变量:声明在类中代码块外的变量,包含"实例变量"和"静态变量"
+ *          实例变量:声明在类中代码块外,且没有static关键字修饰的成员变量,实例变量归属于"对象"
+ *          静态变量:声明在类中代码块外,且含有static关键字修饰的成员变量,静态变量归属于"类"(暂不涉及)
+ *      成员常量:声明在类中代码块外的常量,包含"实例常量"和"静态常量"(暂不涉及)
+ *          实例常量:声明在类中代码块外,且没有static关键字修饰的成员常量,实例常量归属于"对象"(暂不涉及)
+ *          静态常量:声明在类中代码块外,且含有static关键字修饰的成员常量,静态常量归属于"类"(暂不涉及)
+ *
+ * 成员方法:
+ *      实例方法:
+ *          声明在类中且没有static关键字修饰的成员方法,实例方法归属于"对象"
+ *      静态方法(暂不涉及)
+ *          声明在类中且含有static关键字修饰的成员方法,静态方法归属于"类"
+ *
+ * 类的设计格式
+ *      public class 类名 {
+ *          实例变量
+ *          实例方法
+ *      }
+ */
+public class OOPDemo03 {
+    public static void main(String[] args) {
+
+    }
+}
+
+```
+
+```java
+/**
+ * 学生类的设计
+ */
+public class Student {
+    //实例变量
+    String name;
+    int age;
+
+    //实例方法
+    public void study () {
+        System.out.println(age + "岁的" + name + "正在学习HelloWorld!!!");
+    }
+}
+```
+
+### 对象的创建和使用
+
+```java
+/**
+ * 对象的创建和使用
+ *      创建格式:
+ *          类名 对象名 = new 类名(实参);
+ *      使用格式:
+ *          对象名.实例变量名;
+ *          对象名.实例方法名(实参);
+ */
+public class OOPDemo04 {
+    public static void main(String[] args) {
+        //创建学生对象
+        Student s1 = new Student();
+        System.out.println(s1);
+
+        //获取s1对象的姓名和年龄
+        System.out.println(s1.name);
+        System.out.println(s1.age);
+
+        //给s1对象进行赋值
+        s1.name = "蒋小苗";
+        s1.age = 18;
+
+        //获取s1对象的姓名和年龄
+        System.out.println(s1.name);
+        System.out.println(s1.age);
+
+        //获取s1对象的study()
+        s1.study();
+
+        System.out.println("===========================================================");
+
+        //创建第2个学生对象
+        Student s2 = new Student();
+        s2.study();
+    }
+}
+```
+
+```java
+/**
+ * 学生类的设计
+ */
+public class Student {
+    //实例变量
+    String name;
+    int age;
+
+    //实例方法
+    public void study () {
+        System.out.println(age + "岁的" + name + "正在学习HelloWorld!!!");
+    }
+}
+```
+
+![Alt text](java-note/image-7.png)
+
+### 实例变量和局部变量的区别
+
+```java
+/**
+ * 实例变量:声明在类中代码块外,且没有static关键字修饰的成员变量
+ * 局部变量:声明在代码块内或者方法声明上的变量
+ *
+ * 实例变量和局部变量的区别
+ *      代码中的位置不同:
+ *          实例变量:类中代码块外
+ *          局部变量:代码块内或方法声明上(形参列表)
+ *      内存中的位置不同:
+ *          实例变量:堆内存
+ *          局部变量:栈内存
+ *      变量是否含有默认值不同:
+ *          实例变量:含有默认值
+ *          局部变量:没有默认值
+ *      代码中的作用域不同:
+ *          实例变量:所属类中(静态成员除外)
+ *          局部变量:所属方法中
+ *      内存中的生命周期不同:
+ *          实例变量:随着对象的创建而加载,随着对象的回收而消失
+ *          局部变量:随着方法的调用而加载,随着方法的出栈而消失
+ *      加载方式和次数不同
+ *          实例变量:随着对象的创建而加载,每创建一次对象就会加载一次
+ *          局部变量:随着方法的调用而加载,每调用一次方法就会加载一次
+ *      修饰符的使用不同
+ *          实例变量:程序中各种修饰符可以根据需求进行修饰
+ *          局部变量:只能使用final进行修饰
+ */
+public class OOPDemo05 {
+    public static void main(String[] args) {
+       int num = 10;
+    }
+}
+```
+
+```java
+/**
+ * 回顾:在同一作用域内,不可以声明同名的变量
+ * 推论:实例变量和局部变量不在同一作用域,在一个类中可以同时声明实例变量和局部变量
+ *
+ * this关键字的第一种用法:
+ *      场景:
+ *          子类的构造器中或子类的实例方法
+ *      格式:
+ *          this.实例变量名;
+ *          this.实例方法名(实参);
+ *      作用:
+ *          用来区分同一个类中同名的实例变量和局部变量
+ *      含义:
+ *          哪个对象调用了this关键字所在的构造器或实例方法,this关键字就代表哪个对象
+ */
+public class OOPDemo06 {
+    public static void main(String[] args) {
+        Var var = new Var();
+        var.method();
+
+        System.out.println("=======================");
+
+        Var var1 = new Var();
+        System.out.println("var1 = " + var1);
+        var1.show();
+
+        System.out.println("============");
+
+        Var var2 = new Var();
+        System.out.println("var2 = " + var2);
+        var2.show();
+    }
+}
+```
+
+```java
+public class Var {
+    //实例变量
+    int num = 10;
+
+    public void method () {
+        //局部变量
+        int num = 20;
+
+        System.out.println("num = " + num);//就近原则
+        System.out.println("num = " + this.num);
+    }
+
+
+    public void show () {
+        System.out.println("this = " + this);
+    }
+}
+```
+
+### 封装
+
+```java
+/**
+ * 封装:
+ *      含义:
+ *          在程序中给不同的声明内容添加不同的权限访问级别,使之提高程序的安全性和访问性
+ *      核心:
+ *          四种权限访问级别
+ *
+ * 权限访问级别:
+ *      分类(按照从小到大):
+ *          private < 缺省(sheng,什么都不写) < protected < public
+ *
+ * private关键字:
+ *      含义:
+ *          私有的
+ *      修饰:
+ *          实例变量,静态变量,实例常量,静态常量,实例方法,静态方法,实例成员内部类,静态成员内部类,构造器
+ *      特点:
+ *          被private修饰的内容,只能在本类中进行访问和使用,在本类之外无法进行使用,否则编译报错
+ */
+public class OOPDemo07 {
+    public static void main(String[] args) {
+        //创建学生对象
+        Student s = new Student();
+
+        //给学生对象进行赋值
+        s.name = "蒋小苗";
+        //逆生长
+        s.age = -18;
+
+        System.out.println(s.name + "=" + s.age);
+    }
+}
+```
+
+```java
+public class Student {
+    String name;
+    int age;
+
+    /*if (age < 0) {
+
+    }*/
+}
+```
+
+```java
+/**
+ * 私有实例变量:
+ *      含义:
+ *          被private关键字修饰的实例变量
+ *      特点:
+ *          被private修饰的实例变量,只能在本类中进行访问和使用,在本类之外无法进行使用,否则编译报错
+ *      格式:
+ *          private 数据类型 变量名;
+ *      步骤:
+ *          1.将"模版类"中所有的实例变量进行私有化
+ *          2.针对每个被private修饰的变量对外提供一对的公共访问方式(get()和set())
+ *              set()的两个明确:
+ *                  返回类型:void
+ *                  形参列表:存储数据的数据类型 变量名
+ *              get()的两个明确:
+ *                  返回类型:获取数据的数据类型
+ *                  形参列表:()中什么都不写
+ */
+public class OOPDemo08 {
+    public static void main(String[] args) {
+        //创建学生对象
+        Student s = new Student();
+
+        //给学生对象进行赋值
+        //s.name = "蒋小苗";
+        s.setName("蒋小苗");
+        //s.age = -18;
+        s.setAge(-18);
+
+        //System.out.println(s.name + "=" + s.age);
+        System.out.println(s.getName() + "=" + s.getAge());
+    }
+}
+
+```
+
+```java
+public class Student {
+    private String name;
+    private int age;
+
+
+    //存储姓名
+    public void setName (String n) {
+        name = n;
+    }
+
+    //获取姓名
+    public String getName () {
+        return name;
+    }
+
+    //存储年龄
+    public void setAge (int a) {
+        age = a;
+    }
+
+    //获取年龄
+    public int getAge () {
+        return age;
+    }
+}
+
+```
+
+```java
+/**
+ * 使用this关键字优化模版类
+ *
+ * 代码自动生成快捷键
+ *      Alt + Ins(ert)
+ */
+public class OOPDemo09 {
+    public static void main(String[] args) {
+        Student s = new Student();
+
+        s.setName("蒋小苗");
+        s.setAge(18);
+
+        s.study();
+    }
+}
+```
+
+```java
+public class Student {
+    //私有化实例变量
+    private String name;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void study () {
+        System.out.println(age + "岁的" + name + "正在学习HelloWorld");
+    }
+}
+```
+
+### 构造器
+
+```java
+/**
+ * 构造器(构造方法)
+ *      含义:
+ *          1.关键字new会通过构造器对对象进行堆内存区域的开辟
+ *          2.针对对象的成员进行实例初始化
+ *          3.如果是有参的构造器可以针对对象的属性进行赋值操作
+ *      格式:
+ *          修饰符 构造器名 () {}
+ *      特点:
+ *          1.构造器的名字必须与类名相同
+ *          2.构造器没有返回类型,而且连void都没有
+ *          3.构造器的格式和方法类似,也叫做构造方法;构造器有别于方法,构造器中的内容共有三个部分
+ *              第一部分(暂不涉及):隐式或显式的super(实参)或显式的this(实参)
+ *              第二部分(暂不涉及):隐式加载实例成员和构造器代码块
+ *              第三部分:构造器中除this(实参)或super(实参)的显式代码
+ *          4.当一个类没有任何的构造器时,JVM的编译器在编译时自动补全一个public的无参构造器,供其进行创建对象时初始化成员;
+ *          当一个类含有任何的构造器时,JVM的编译器不会再隐式补全
+ *          5.构造器支持方法的重载
+ *      注意:
+ *          set()和构造器的区别:
+ *          1.set()只有赋值操作,有参构造器除了赋值操作外,初始化对象成员的作用
+ *          2.set()可以反复调用多次,构造器只能在创建对象时使用唯一的一次
+ *
+ */
+public class OOPDemo10 {
+    public static void main(String[] args) {
+        //类名 对象名 = new 类名(实参);
+        Student s = new Student("张三",18);
+
+        new Student();
+
+        System.out.println(s.print());
+    }
+}
+```
+
+```java
+public class Student {
+    private String name;
+    private int age;
+
+    public Student () {
+        System.out.println("构造器");
+    }
+
+    public Student (String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String print () {
+        return name + "=" + age;
+    }
+}
+```
+
+### JavaBean标准类
+
+```java
+/**
+ * JavaBean标准类:
+ *      含义:
+ *          在实际开发中没有上级的特殊说明情况下,程序员间设计类的约定俗成的规范
+ *      内容:
+ *          必须有:
+ *              1.类的声明必须由public修饰
+ *              2.一个.java文件中只允许包含一个类
+ *              3.无参构造器
+ *              4.所有的成员量必须进行私有化
+ *              5.针对每个被私有化的成员量提供一对的公共访问方式(set()和get())
+ *          可以有
+ *              1.根据实际需求添加合适有参构造器
+ *              2.根据实际需求添加构造器代码块(暂不涉及)
+ *              3.根据实例需求添加静态代码块(暂不涉及)
+ *              4.根据实际需求添加toString(),hashCode(),equals()(暂不涉及)
+ *              5.根据实际需求添加内部类
+ */
+public class OOPDemo11 {
+    public static void main(String[] args) {
+        //通过无参构造器创建对象
+        Student s1 = new Student();
+
+        s1.setName("蒋小苗");
+        s1.setAge(18);
+
+        s1.study();
+
+        System.out.println("==============================");
+
+        //通过有参构造器创建对象
+        Student s2 = new Student("蒋大苗", 18);
+
+        s2.study();
+    }
+}
+```
+
+```java
+public class Student {
+    private String name;
+    private int age;
+
+    public Student() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void study () {
+        System.out.println(age + "岁的" + name + "正在学习HelloWorld!!!!");
+    }
+}
+```
+
+```java
+
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
 ```
 
 ```java
