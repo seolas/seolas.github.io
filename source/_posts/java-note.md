@@ -1,5 +1,5 @@
 ---
-title: java-note
+title: java笔记
 date: 2024-01-21 17:30:49
 tags: [java]
 ---
@@ -6445,7 +6445,7 @@ public class ArraysDemo {
     public static void main(String[] args) {
         //声明并初始化数组
         int[] arr1 = {5,4,6,8,9,0,1,2,7,3};
-        String[] arr2 = {"cba","bac","acb","cab","abc","bca","尚硅谷","0","ABC"};
+        String[] arr2 = {"cba","bac","acb","cab","abc","bca","中文","0","ABC"};
 
         Student stu1 = new Student("城小将",18);
         Student stu2 = new Student("唐小妃",18);
@@ -10382,12 +10382,12 @@ public class IntegerDemo03 {
  *              从"空间复杂度"分析:
  *                  如果底层数组是char[],会根据"内码规则"进行字符和字节的转换:
  *                      字符串存储内容"abc",将"abc"拆分成3个字符存储到数组中,每个字符占2个字节,总共占用6个字节
- *                      字符串存储内容"尚硅谷",将"尚硅谷"拆分成3个字符存储到数组中,每个字符占2个字节,总共占用6个字节
+ *                      字符串存储内容"中文",将"中文"拆分成3个字符存储到数组中,每个字符占2个字节,总共占用6个字节
  *                  如果底层数组是byte[],会根据"开发编码环境"进行字符和字节转换
  *                      当编码环境为GBK时,字符串存储内容"abc",在GBK编码中每个字母字符占2个字节,总共占用6个字节
- *                      当编码环境为GBK时,字符串存储内容"尚硅谷",在GBK编码中每个中文字符占2个字节,总共占用6个字节
+ *                      当编码环境为GBK时,字符串存储内容"中文",在GBK编码中每个中文字符占2个字节,总共占用6个字节
  *                      当编码环境为utf8时,字符串存储内容"abc",在utf8编码中每个字母字符占1个字节,总共占用3个字节
- *                      当编码环境为utf8时,字符串存储内容"尚硅谷",在utf8编码中每个中文字符占3个字节,总共占用9个字节
+ *                      当编码环境为utf8时,字符串存储内容"中文",在utf8编码中每个中文字符占3个字节,总共占用9个字节
  *          8.String为什么可以存储中文?
  *              JVM的底层是UTF-16的编码方式,只要是Unicode码表中的中文都支持
  *          9.String内容的最大长度是多少?
@@ -10700,7 +10700,7 @@ public class StringDemo05 {
 
         //将字符串转换成字节数组
         System.out.println(Arrays.toString(str.getBytes()));
-        System.out.println(Arrays.toString("尚硅谷".getBytes()));
+        System.out.println(Arrays.toString("中文".getBytes()));
 
         //将字符串转换字符数组
         System.out.println(Arrays.toString(str.toCharArray()));
@@ -14038,7 +14038,7 @@ public class SetDemo04 {
         set.add("cab");
         set.add("bac");
         set.add("acb");
-        set.add("尚硅谷");
+        set.add("中文");
         set.add("0");
         set.add("ABC");
 
@@ -15158,7 +15158,7 @@ import java.io.IOException;
 public class FileDemo02 {
     public static void main(String[] args) throws IOException {
         //创建文件字节输入流对象
-        FileInputStream fis = new FileInputStream("day18_code\\src\\com\\atguigu\\io\\file\\FileInputStream.txt");
+        FileInputStream fis = new FileInputStream("day18_code\\src\\com\\test\\io\\file\\FileInputStream.txt");
 
         //以单个字节读取操作
         /*System.out.println(fis.read());
@@ -15227,7 +15227,7 @@ import java.util.Arrays;
 public class FileDemo03 {
     public static void main(String[] args) throws IOException {
         //创建文件字节输出流对象
-        FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\atguigu\\io\\file\\FileOutputStream.txt");
+        FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\test\\io\\file\\FileOutputStream.txt");
 
         //以单个字节的方式写出内容
         fos.write(97);
@@ -15235,7 +15235,7 @@ public class FileDemo03 {
         fos.write(99);
 
         //以字节数组的方式写出内容
-        fos.write("尚硅谷".getBytes());
+        fos.write("中文".getBytes());
 
         //以指定范围的字节数组方式写出内容
         fos.write("abcdefg".getBytes(),3,3);//def
@@ -15259,10 +15259,10 @@ import java.io.IOException;
 public class FileDemo04 {
     public static void main(String[] args) throws IOException {
         //创建文件字节输出流
-        FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\atguigu\\io\\file\\FileOutputStream.txt",true);
+        FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\test\\io\\file\\FileOutputStream.txt",true);
 
         //进行写出操作
-        fos.write("尚硅谷".getBytes());
+        fos.write("中文".getBytes());
 
         //关闭资源
         fos.close();
@@ -15282,7 +15282,7 @@ import java.io.IOException;
 public class FileDemo05 {
     public static void main(String[] args) throws IOException {
         //创建文件字节输出流
-        FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\atguigu\\io\\file\\FileOutputStream.txt");
+        FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\test\\io\\file\\FileOutputStream.txt");
 
         //进行写出操作
         fos.write("尚".getBytes());
@@ -15399,7 +15399,7 @@ import java.io.IOException;
 public class FileDemo08 {
     public static void main(String[] args) throws IOException {
         //创建文件字符输入流对象
-        FileReader fr = new FileReader("day18_code\\src\\com\\atguigu\\io\\file\\FileReader.txt");
+        FileReader fr = new FileReader("day18_code\\src\\com\\test\\io\\file\\FileReader.txt");
 
         //以单个字符读取操作
         /*int len;
@@ -15460,7 +15460,7 @@ import java.io.IOException;
 public class FileDemo09 {
     public static void main(String[] args) throws IOException {
         //创建文件字符输出流对象
-        FileWriter fw = new FileWriter("day18_code\\src\\com\\atguigu\\io\\file\\FileWriter.txt");
+        FileWriter fw = new FileWriter("day18_code\\src\\com\\test\\io\\file\\FileWriter.txt");
 
         //写入单个字符
         fw.write(97);
@@ -15743,7 +15743,7 @@ import java.io.IOException;
 public class BufferedDemo02 {
     public static void main(String[] args) throws IOException {
         //创建缓冲字符输入流对象
-        BufferedReader fr = new BufferedReader(new FileReader("day19_code\\src\\com\\atguigu\\io\\buffered\\BufferedReader.txt"));
+        BufferedReader fr = new BufferedReader(new FileReader("day19_code\\src\\com\\test\\io\\buffered\\BufferedReader.txt"));
 
         //读取操作
         String len;
@@ -15781,7 +15781,7 @@ import java.io.IOException;
 public class BufferedDemo03 {
     public static void main(String[] args) throws IOException {
         //创建缓冲字符输出流对象
-        BufferedWriter bw = new BufferedWriter(new FileWriter("day19_code\\src\\com\\atguigu\\io\\buffered\\BufferedWriter.txt"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("day19_code\\src\\com\\test\\io\\buffered\\BufferedWriter.txt"));
 
         bw.write("尚");
         bw.newLine();
@@ -15961,7 +15961,7 @@ import java.io.ObjectOutputStream;
 public class ObjectDemo01 {
     public static void main(String[] args) throws IOException {
         //创建对象输出流对象
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("day19_code\\src\\com\\atguigu\\io\\object\\student.txt"));
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("day19_code\\src\\com\\test\\io\\object\\student.txt"));
 
         //创建学生对象
         Student s = new Student("张三", 18);
@@ -15998,7 +15998,7 @@ import java.io.ObjectInputStream;
 public class ObjectDemo02 {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         //创建对象输入流对象
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("day19_code\\src\\com\\atguigu\\io\\object\\student.txt"));
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("day19_code\\src\\com\\test\\io\\object\\student.txt"));
 
         //读取对象
         Object o = ois.readObject();
@@ -16041,7 +16041,7 @@ public class ObjectDemo03 {
 
     private static void read() throws IOException, ClassNotFoundException {
         //创建对象输入流对象
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("day19_code\\src\\com\\atguigu\\io\\object\\student.txt"));
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("day19_code\\src\\com\\test\\io\\object\\student.txt"));
 
         //读取对象
         Object o = ois.readObject();
@@ -16058,7 +16058,7 @@ public class ObjectDemo03 {
 
     private static void writer() throws IOException {
         //创建对象输出流对象
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("day19_code\\src\\com\\atguigu\\io\\object\\student.txt"));
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("day19_code\\src\\com\\test\\io\\object\\student.txt"));
 
         //创建学生对象
         Student s1 = new Student("张三", 18);
@@ -16192,21 +16192,21 @@ import java.io.*;
  *      类的方法
  *
  * 需求:
- *      读取本地磁盘中utf8编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
- *      读取本地磁盘中utf8编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
- *      读取本地磁盘中gbk编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
- *      读取本地磁盘中gbk编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
+ *      读取本地磁盘中utf8编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
+ *      读取本地磁盘中utf8编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
+ *      读取本地磁盘中gbk编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
+ *      读取本地磁盘中gbk编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
  *
  */
 public class ShiftDemo02 {
     public static void main(String[] args) throws IOException {
-        //读取本地磁盘中utf8编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
+        //读取本地磁盘中utf8编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
         //method01();
-        //读取本地磁盘中utf8编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
+        //读取本地磁盘中utf8编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
         //method02();
-        //读取本地磁盘中gbk编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
+        //读取本地磁盘中gbk编码的文本文件,并以utf8编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
         //method03();
-        //读取本地磁盘中gbk编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"尚硅谷"不能出现乱码
+        //读取本地磁盘中gbk编码的文本文件,并以gbk编码进行文本文件复制,过程中需要保证文本文件中的内容"中文"不能出现乱码
         method04();
     }
 
@@ -16338,7 +16338,7 @@ public class SystemDemo02 {
 
         System.out.println("Hello");
 
-        PrintStream ps = new PrintStream("day19_code\\src\\com\\atguigu\\io\\system\\PrintStream.txt");
+        PrintStream ps = new PrintStream("day19_code\\src\\com\\test\\io\\system\\PrintStream.txt");
 
         ps.println("好好学习,天天向上");
 
@@ -16389,7 +16389,7 @@ public class MapDemo {
         Properties pro = new Properties();
 
         //从"配置文件"中加载键值对到属性集对象中
-        pro.load(new FileInputStream("day19_code\\src\\com\\atguigu\\map\\pro.properties"));
+        pro.load(new FileInputStream("day19_code\\src\\com\\test\\map\\pro.properties"));
 
         //遍历Properties属性集对象
         Set<String> keys = pro.stringPropertyNames();
@@ -17195,6 +17195,9 @@ public class CEO {
         return ceo;
     }
 }
+public interface MyInterface {
+}
+
 ```
 
 ### 线程的状态有几种
@@ -17256,5 +17259,2378 @@ public class ThreadDemo12 {
 
     }
 }
+```
+
+## 反射机制
+
+```java
+public class Person extends Creature<String> implements Comparable, MyInterface{
+
+    public String name;
+    private Integer age;
+
+    public Person() {
+    }
+
+    public Person(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    private Person(String name, Integer age, double score) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name, double score, int age) {
+        System.out.println(name);
+        System.out.println(score);
+        System.out.println(age);
+        System.out.println("setName方法运行了……");
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
+    public void eat(){
+        System.out.println("吃饭");
+    }
+
+    private String sleep() throws RuntimeException{
+        System.out.println("睡觉");
+
+        return "哈哈哈";
+    }
+
+    public class Computer{
+
+    }
+
+    private class Head{
+
+    }
+}
+```
+
+```java
+public class Creature<T> {
+
+    public String color;
+    private Integer legs;
+
+    public Creature() {
+    }
+
+    public Creature(String color, Integer legs) {
+        this.color = color;
+        this.legs = legs;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Integer getLegs() {
+        return legs;
+    }
+
+    public void setLegs(Integer legs) {
+        this.legs = legs;
+    }
+}
+
+public interface MyInterface {
+}
+```
+
+```java
+import org.junit.Test;
+
+/*
+一、
+Java 程序的运行分为两种状态：
+编译时: 通过 javac 命令，生成一个或多个 .class 字节码文件。（每个类对应着一个 .class）
+运行时: 通过 java 命令，将生成 .class 字节码文件加载到内存中。（由JVM提供的类加载器）
+
+二、
+类用于描述现实生活中的一类事物，类是抽象的，通过 new 关键字创建对象，操作其属性，调用其方法。
+（在编译时可以明确知道创建什么类对象、操作什么属性、调用什么方法）
+
+某种情况下，我们需要得知并使用一个在编译时完全未知的类，创建其对象，操作其属性，调用其方法
+
+三、反射机制：被视为动态语言的关键，可以在运行时创建任意类的对象，操作任意对象的属性，调用任意对象的方法
+
+Class 是开启反射的源头！
+
+四、如何获取 Class 实例
+       //1. 通过运行时类的 class 属性
+
+        //2. 通过运行时类对象的 getClass() 方法
+
+        //3. 通过 Class 类中的静态方法 forName(String className)
+
+        //4. （了解）通过类加载器
+ */
+public class ReflectionTest {
+
+    @Test
+    public void test2() throws ClassNotFoundException {
+        //1. 通过运行时类的 class 属性
+        Class clazz1 = Person.class;
+        System.out.println(clazz1);
+
+        //2. 通过运行时类对象的 getClass() 方法
+        /*Person p = new Person();
+        Class clazz2 = p.getClass();
+        System.out.println(clazz2);*/
+
+        //3. 通过 Class 类中的静态方法 forName(String className)
+        String className = "com.test.java.Person";
+        Class clazz3 = Class.forName(className);
+        System.out.println(clazz3);
+
+        //4. （了解）通过类加载器
+        ClassLoader cl = ReflectionTest.class.getClassLoader();
+        Class clazz4 = cl.loadClass(className);
+        System.out.println(clazz4);
+    }
+
+    //通用查询数据库
+    /*public <T> T get(){
+        //N行查询语句
+
+        return 反射机制;
+    }*/
+
+    @Test
+    public void test1(){
+        Person p = new Person("张三", 18);
+        System.out.println(p);
+    }
+
+}
+```
+
+### 类加载器
+
+```java
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Properties;
+
+public class ClassLoaderTest {
+
+    //使用 Properties 操作属性文件
+    @Test
+    public void test2() throws IOException {
+        Properties props = new Properties();
+        //props.load(new FileInputStream("./jdbc.properties"));
+
+        //利用类加载器加载属性文件
+        props.load(this.getClass().getClassLoader().getResourceAsStream("jdbc.properties"));
+
+        String username = props.getProperty("username");
+        String password = props.getProperty("password");
+
+        System.out.println(username);
+        System.out.println(password);
+    }
+
+    //了解
+    @Test
+    public void test1() throws ClassNotFoundException {
+        ClassLoader cl = this.getClass().getClassLoader();
+        System.out.println(cl);
+
+        /*ClassLoader cl2 = cl.getParent();
+        System.out.println(cl2);
+
+        ClassLoader cl3 = cl2.getParent();
+        System.out.println(cl3);*/
+
+        String className = "com.test.java.Person";
+        Class clazz = Class.forName(className);
+        ClassLoader cl4 = clazz.getClassLoader();
+        System.out.println(cl4);
+    }
+
+}
+```
+
+### 单元测试
+
+```java
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class PersonTest {
+
+    @Before
+    public void before(){
+        System.out.println("---之前----");
+    }
+
+    @Test
+    public void testSetName(){
+        System.out.println("HelloWorld");
+    }
+
+    @Test
+    public void testSetAge(){
+        System.out.println("abcde");
+    }
+
+    @After
+    public void after(){
+        System.out.println("---之后---");
+    }
+}
+```
+
+### 在运行时获取运行时类的属性
+
+```java
+import org.junit.Test;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
+public class FieldTest {
+
+    //1. 在运行时获取运行时类的属性
+    @Test
+    public void test1(){
+        Class clazz = Person.class;
+
+        //getFields() : 获取所有 public 修饰的属性，包括父类的
+//        Field[] fields = clazz.getFields();
+
+        //getDeclaredFields() : 获取本类所有的属性，包括私有的，不包括父类的
+        Field[] fields = clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            System.out.println(field.getName());
+        }
+    }
+
+    //2. 在运行时获取运行时类属性的完整结构。 修饰符 数据类型 属性名;
+    @Test
+    public void test2(){
+        Class clazz = Person.class;
+
+        Field[] fields = clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            //①修饰符
+            int m = field.getModifiers();
+            String strMod = Modifier.toString(m);
+            System.out.print(strMod + "\t");
+
+            //②数据类型
+            Class type = field.getType();
+            System.out.print(type.getName() + "\t");
+
+            //③属性名
+            System.out.println(field.getName());
+        }
+    }
+
+    //3. 在运行时获取并操作运行时类对象的属性。
+    @Test
+    public void test3() throws Exception {
+        Class<Person> clazz = Person.class;
+
+        Person person = clazz.newInstance();
+
+        Field name = clazz.getField("name");
+
+        //①设置属性值
+        name.set(person, "张三");
+
+        //②获取属性值
+        Object obj = name.get(person);
+        System.out.println(obj);
+
+        System.out.println("---------------------------------");
+
+        Field age = clazz.getDeclaredField("age");
+
+        age.setAccessible(true);//忽略访问权限
+
+        age.set(person, 18);
+        Object obj2 = age.get(person);
+        System.out.println(obj2);
+    }
+}
+```
+
+### 在运行时获取运行时类的方法
+
+```java
+import org.junit.Test;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+public class MethodTest {
+
+    //1. 在运行时获取运行时类的方法
+    @Test
+    public void test1(){
+        Class clazz = Person.class;
+
+        //getMethods() : 获取所有 public 修饰的方法，包括父类的
+//        Method[] methods = clazz.getMethods();
+
+        //getDeclaredMethods() : 获取本类所有的方法，包括私有的，不包括父类的
+        Method[] methods = clazz.getDeclaredMethods();
+
+        for (Method method : methods) {
+            System.out.println(method.getName());
+        }
+    }
+
+    //2. 在运行时获取运行时类方法的完整结构。 修饰符 返回值类型 方法名(参数类型1 参数名1, 参数类型2 参数名2, ……)
+    @Test
+    public void test2(){
+        Class clazz = Person.class;
+
+        Method[] methods = clazz.getDeclaredMethods();
+
+        for (Method method : methods) {
+            //①修饰符
+            String mod = Modifier.toString(method.getModifiers());
+            System.out.print(mod + "\t");
+
+            //②返回值类型
+            Class returnType = method.getReturnType();
+            System.out.print(returnType.getName() + "\t");
+
+            //③方法名
+            System.out.print(method.getName() + "(");
+
+            //④参数列表
+            Class[] parameterTypes = method.getParameterTypes();
+
+            for (Class parameterType : parameterTypes) {
+                System.out.print(parameterType.getName() + ",");
+            }
+
+            System.out.println(")");
+
+            //⑤异常
+            Class<?>[] exceptionTypes = method.getExceptionTypes();
+
+            for (Class<?> exceptionType : exceptionTypes) {
+                System.out.println(exceptionType.getName());
+            }
+        }
+    }
+
+    //3. 在运行时获取并调用运行时类对象的方法
+    @Test
+    public void test3() throws Exception {
+        Class<Person> clazz = Person.class;
+
+        Person person = clazz.newInstance();
+
+        Method method = clazz.getMethod("eat");
+
+        method.invoke(person);
+
+        System.out.println("------------------------------------");
+
+        Method method2 = clazz.getMethod("setName", String.class, double.class, int.class);
+        Object obj = method2.invoke(person, "张三", 99.99, 18);
+        System.out.println(obj);
+
+        System.out.println("------------------------------------");
+
+        Method method3 = clazz.getDeclaredMethod("sleep");
+
+        method3.setAccessible(true);//忽略访问权限
+
+        Object obj2 = method3.invoke(person);
+        System.out.println(obj2);
+    }
+}
+```
+
+### 在运行时获取运行时类的父类
+
+```java
+import org.junit.Test;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+public class OtherTest {
+
+    //6. 在云像是获取运行时类的包
+    @Test
+    public void test6(){
+        Class clazz = Person.class;
+        Package pk = clazz.getPackage();
+        System.out.println(pk);
+    }
+
+    //5. 在运行时获取运行时类的接口
+    @Test
+    public void test5(){
+        Class clazz = Person.class;
+        Class[] interfaces = clazz.getInterfaces();
+
+        for (Class anInterface : interfaces) {
+            System.out.println(anInterface);
+        }
+    }
+
+    //4. 在运行时获取运行时类的内部类
+    @Test
+    public void test4(){
+        Class clazz = Person.class;
+
+//        Class[] classes = clazz.getClasses();
+
+        Class[] classes = clazz.getDeclaredClasses();
+
+        for (Class aClass : classes) {
+            System.out.println(aClass);
+        }
+    }
+
+    //3. [重要]在运行时获取带泛型父类的泛型类型
+    @Test
+    public void test3(){
+        Class clazz = Person.class;
+
+        //1. 获取带泛型父类的类型
+        Type type = clazz.getGenericSuperclass();
+
+        //2. 参数化类型
+        ParameterizedType pt = (ParameterizedType) type;
+
+        //3. 获取所有参数
+        Type[] types = pt.getActualTypeArguments();
+
+        Class c = (Class) types[0];
+        System.out.println(c.getName());
+    }
+
+    //2. 在运行时获取运行时类的带泛型的父类类型
+    @Test
+    public void test2(){//com.test.java.Creature<java.lang.String> c = new Person();
+        Class clazz = Person.class;
+        Type type = clazz.getGenericSuperclass();
+        System.out.println(type);
+    }
+
+    //1. 在运行时获取运行时类的父类
+    @Test
+    public void test1(){
+        Class clazz = Person.class;
+        Class superclass = clazz.getSuperclass();
+        System.out.println(superclass);
+    }
+
+}
+```
+
+### 在运行时获取并调用运行时类的构造器
+
+```java
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+
+public class ConstructorTest {
+
+    //在运行时获取并调用运行时类的构造器
+    @Test
+    public void test1() throws Exception {
+        Class<Person> clazz = Person.class;
+
+        /*Constructor<Person> constructor = clazz.getConstructor(String.class, Integer.class);
+
+        Person p = constructor.newInstance("张三", 18);
+
+        System.out.println(p);*/
+
+        Constructor<Person> constructor = clazz.getDeclaredConstructor(String.class, Integer.class, double.class);
+        constructor.setAccessible(true);
+        Person p2 = constructor.newInstance("张三", 18, 99.99);
+        System.out.println(p2);
+    }
+
+}
+```
+
+### 在运行时获取运行时类的实例
+
+```java
+import org.junit.Test;
+
+/*
+在运行时获取运行时类的实例
+
+newInstance() : 默认调用运行时类的无参构造器
+ */
+public class NewInstanceTest {
+
+    @Test
+    public void test1() throws Exception {
+        /*Class clazz = Person.class;
+        Person p = (Person)clazz.newInstance();
+        System.out.println(p);*/
+
+        Class<Person> clazz = Person.class;
+        Person p = clazz.newInstance();
+        System.out.println(p);
+    }
+
+}
+```
+
+## 网络通信
+
+```java
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+/*
+一、网络通信的两点要素
+
+1、确定通信双方的地址
+    > IP 地址  如：125.76.247.133
+    > 域名  如：www.test.com
+
+
+2、若需要可靠高效的完成通络通信，需要满足一定的规则，即网络通信协议（TCP、UDP）
+
+
+ */
+public class InetAddressTest {
+
+    public static void main(String[] args) throws UnknownHostException {
+        InetAddress ia1 = InetAddress.getByName("www.test.com");
+        System.out.println(ia1);
+
+        /*InetAddress ia2 = InetAddress.getByName("125.76.247.133");
+        System.out.println(ia2);*/
+
+        String hostName = ia1.getHostName();
+        String hostAddress = ia1.getHostAddress();
+
+        System.out.println(hostName);
+        System.out.println(hostAddress);
+    }
+
+}
+```
+
+```java
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/*
+1.客户端发送内容给服务端，服务端将内容打印到控制台上。
+*/
+public class TCPTest1 {
+
+    //客户端
+    @Test
+    public void client(){
+        String str = "我大中文威武！";
+
+        //一个IP地址和一个端口号的组合形成 Socket 套接字
+        Socket s = null;
+        OutputStream os = null;
+        try {
+            s = new Socket(InetAddress.getByName("127.0.0.1"), 9898);
+
+            os = s.getOutputStream();
+
+            os.write(str.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            if(os != null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(s != null){
+                try {
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+    }
+
+    //服务端
+    @Test
+    public void server(){
+        ServerSocket ss = null;
+        Socket s = null;
+        InputStream in = null;
+        try {
+            ss = new ServerSocket(9898);
+
+            //处于阻塞状态用于接收当前连接的 Socket
+            s = ss.accept();
+
+            in = s.getInputStream();
+
+            byte[] b = new byte[1024];
+            int len = 0;
+
+            while((len = in.read(b)) != -1){
+                System.out.println(new String(b, 0, len));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            if(in != null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(s != null){
+                try {
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(ss != null){
+                try {
+                    ss.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+}
+```
+
+```java
+import com.sun.security.ntlm.Server;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/*
+2.客户端发送内容给服务端，服务端给予反馈。
+ */
+public class TCPTest2 {
+
+    //客户端
+    @Test
+    public void client() throws IOException { //我使用 throws 但是你们得 try-catch
+        String str = "我大中文威武！Hello！";
+
+        Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 9898);
+
+        //发送数据给服务端
+        OutputStream os = s.getOutputStream();
+        os.write(str.getBytes());
+
+        s.shutdownOutput();//通知服务端发送完毕
+
+        //接收服务端的反馈
+        InputStream in = s.getInputStream();
+
+        byte[] b = new byte[1024];
+        int len = 0;
+
+        while((len = in.read(b)) != -1){
+            System.out.println(new String(b, 0, len));
+        }
+
+        in.close();
+        os.close();
+        s.close();
+    }
+
+    //服务端
+    @Test
+    public void server() throws IOException {
+        ServerSocket ss = new ServerSocket(9898);
+        Socket s = ss.accept();
+
+        //接收客户端数据
+        InputStream in = s.getInputStream();
+        byte[] b = new byte[1024];
+        int len = 0;
+        while((len = in.read(b)) != -1){
+            System.out.println(new String(b, 0, len));
+        }
+
+        //发送反馈给客户端
+        OutputStream os = s.getOutputStream();
+        os.write("接收成功!".getBytes());
+
+        os.close();
+        in.close();
+        s.close();
+        ss.close();
+    }
+
+}
+```
+
+```java
+import org.junit.Test;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/*
+3.从客户端发送文件给服务端，服务端保存到本地。并返回“发送成功”给客户端。并关闭相应的连接。
+ */
+public class TCPTest3 {
+
+    //客户端
+    @Test
+    public void client() throws IOException {
+        Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 9898);
+        FileInputStream fis = new FileInputStream("./1.jpg");
+
+        //客户端发送图片给服务端
+        OutputStream os = s.getOutputStream();
+
+        byte[] b = new byte[1024];
+        int len = 0;
+        while((len = fis.read(b)) != -1){
+            os.write(b, 0, len);
+        }
+
+        s.shutdownOutput();
+
+        //接收服务端反馈
+        InputStream in = s.getInputStream();
+
+        while((len = in.read(b)) != -1){
+            System.out.println(new String(b, 0, len));
+        }
+
+        in.close();
+        os.close();
+        fis.close();
+        s.close();
+    }
+
+    //服务端
+    @Test
+    public void server() throws IOException {
+        ServerSocket ss = new ServerSocket(9898);
+        Socket s = ss.accept();
+
+        FileOutputStream fos = new FileOutputStream("./2.jpg");
+
+        InputStream in = s.getInputStream();
+        byte[] b = new byte[1024];
+        int len = 0;
+        while((len = in.read(b)) != -1){
+            fos.write(b, 0, len);
+        }
+
+        //发送反馈
+        OutputStream os = s.getOutputStream();
+        os.write("接收好看的图片成功".getBytes());
+
+        os.close();
+        in.close();
+        fos.close();
+        s.close();
+        ss.close();
+    }
+
+}
 
 ```
+
+```java
+import org.junit.Test;
+
+import java.net.*;
+
+public class UDPTest {
+
+    //发送端
+    @Test
+    public void send() throws Exception {
+
+        DatagramSocket ds = new DatagramSocket();
+
+        int i = 0;
+        while(i <= 100){
+            String str = "我大中文威武！" + i++;
+            byte[] b = str.getBytes();
+            DatagramPacket dp = new DatagramPacket(b, 0, b.length, InetAddress.getByName("127.0.0.1"), 9898);
+
+            //发送
+            ds.send(dp);
+        }
+
+        ds.close();
+    }
+
+    //接收端
+    @Test
+    public void receive() throws Exception {
+        DatagramSocket ds = new DatagramSocket(9898);
+
+        byte[] b = new byte[1024];
+
+        int i = 0;
+
+        while(i <= 100){
+            DatagramPacket dp = new DatagramPacket(b, 0, b.length);
+            ds.receive(dp);
+
+            System.out.println(new String(dp.getData(), 0, dp.getLength()));
+
+            i++;
+        }
+
+        ds.close();
+    }
+}
+```
+
+```java
+import org.junit.Test;
+
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+public class URLTest {
+
+    @Test
+    public void test1() throws Exception {
+//        URL url = new URL("http://192.168.17.66/test/hello.txt");
+
+        URL url = new URL("https://down.sandai.net/thunder11/XunLeiWebSetup11.3.12.1932gw.exe");
+
+        /*
+        public String getProtocol(  )     获取该URL的协议名
+        public String getHost(  )           获取该URL的主机名
+        public String getPort(  )            获取该URL的端口号
+        public String getPath(  )           获取该URL的文件路径
+        public String getFile(  )             获取该URL的文件名
+        public String getRef(  )             获取该URL在文件中的相对位置
+        public String getQuery(   )        获取该URL的查询名
+         */
+
+        /*System.out.println(url.getProtocol());
+        System.out.println(url.getHost());
+        System.out.println(url.getPort());
+        System.out.println(url.getPath());
+        System.out.println(url.getFile());
+        System.out.println(url.getRef());
+        System.out.println(url.getQuery());*/
+
+        /*InputStream in = url.openStream();
+
+        byte[] b = new byte[1024];
+        int len = 0;
+        while((len = in.read(b)) != -1){
+            System.out.println(new String(b, 0, len));
+        }
+
+        in.close();*/
+
+        //URLConnection 代表与指定站点的连接
+        URLConnection uc = url.openConnection();
+
+        InputStream in = uc.getInputStream();
+        FileOutputStream fos = new FileOutputStream("D:/1.exe");
+
+        byte[] b = new byte[1024];
+        int len = 0;
+        while((len = in.read(b)) != -1){
+            fos.write(b, 0, len);
+        }
+
+        fos.close();
+        in.close();
+    }
+
+}
+```
+
+## Java8
+
+```java
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+public class LambdaTest {
+
+    @Test
+    public void test1(){
+        //匿名内部类
+        Comparator<String> com = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return Integer.compare(o1.length(), o2.length());
+            }
+        };
+
+        System.out.println("-------------------------------------");
+
+        //Java8 的 Lambda 表达式
+        Comparator<String> com2 = (x, y) -> Integer.compare(x.length(), y.length());
+    }
+
+    //测试数据
+    List<Employee> list = Arrays.asList(
+            new Employee(101, "张三", 18, 9999.99),
+            new Employee(102, "李四", 20, 5555.55),
+            new Employee(103, "王五", 8, 7777.77),
+            new Employee(104, "赵六", 35, 6666.66),
+            new Employee(105, "田七", 15, 8888.88)
+    );
+
+    //需求：获取公司中所有工资大于 6000 的员工信息
+    /*public List<Employee> filterEmployeeBySalary(List<Employee> emps){
+        List<Employee> employees = new ArrayList<>();
+
+        for (Employee emp : emps) {
+            if(emp.getSalary() > 6000){
+                employees.add(emp);
+            }
+        }
+
+        return employees;
+    }
+
+    //需求：获取公司员工中年龄大于25的员工信息
+    public List<Employee> filterEmployeeByAge(List<Employee> emps){
+        List<Employee> employees = new ArrayList<>();
+
+        for (Employee emp : emps) {
+            if(emp.getAge() > 25){
+                employees.add(emp);
+            }
+        }
+
+        return employees;
+    }
+
+    @Test
+    public void test2(){
+        *//*List<Employee> employees = filterEmployeeBySalary(list);
+
+        for (Employee e : employees) {
+            System.out.println(e);
+        }*//*
+
+        List<Employee> employees = filterEmployeeByAge(list);
+
+        for (Employee employee : employees) {
+            System.out.println(employee);
+        }
+    }*/
+
+    //优化方式一：策略设计模式
+    public List<Employee> filterEmployees(List<Employee> employees, MyPredicate<Employee> mp){
+        List<Employee> emps = new ArrayList<>();
+
+        for (Employee e : employees) {
+            if(mp.test(e)){
+                emps.add(e);
+            }
+        }
+
+        return emps;
+    }
+
+    @Test
+    public void test3(){
+        List<Employee> employees = filterEmployees(list, new FilterEmployeeBySalary());
+
+        for (Employee e : employees) {
+            System.out.println(e);
+        }
+
+        System.out.println("----------------------------------");
+
+        List<Employee> employees1 = filterEmployees(list, new FilterEmployeeByAge());
+
+        for (Employee employee : employees1) {
+            System.out.println(employee);
+        }
+    }
+
+    //优化方式二：匿名内部类+匿名对象
+    @Test
+    public void test4(){
+        List<Employee> employees = filterEmployees(list, new MyPredicate<Employee>() {
+            @Override
+            public boolean test(Employee employee) {
+                return employee.getSalary() > 6000;
+            }
+        });
+
+        for (Employee e : employees) {
+            System.out.println(e);
+        }
+    }
+
+    //优化方式三：Lambda 表达式
+    @Test
+    public void test5(){
+        List<Employee> employees = filterEmployees(list, (e) -> e.getSalary() > 6000);
+        employees.forEach(System.out::println);
+    }
+
+    //优化方式四：强大的 Stream API
+    @Test
+    public void test6(){
+        list.stream().filter((e) -> e.getSalary() > 6000).forEach(System.out::println);
+
+        System.out.println("----------------------------------------");
+
+        list.stream().map(Employee::getName).limit(2).forEach(System.out::println);
+    }
+}
+
+```
+
+```java
+public class Employee {
+
+    private Integer id;
+    private String name;
+    private Integer age;
+    private Double salary;
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String name, Integer age, Double salary) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                '}';
+    }
+}
+```
+
+```java
+public interface MyPredicate<T> {
+
+    public boolean test(T t);
+
+}
+```
+
+```java
+public class FilterEmployeeByAge implements MyPredicate<Employee> {
+    @Override
+    public boolean test(Employee employee) {
+        return employee.getAge() > 25;
+    }
+}
+
+```
+
+```java
+public class FilterEmployeeBySalary implements MyPredicate<Employee> {
+    @Override
+    public boolean test(Employee employee) {
+        return employee.getSalary() > 6000;
+    }
+}
+```
+
+### Lambda 表达式
+
+```java
+import org.junit.Test;
+import sun.util.resources.cldr.ar.CalendarData_ar_YE;
+
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+
+/*
+一、Lambda 表达式：Java8中出了一个全新的操作符 "->", 该操作符称为箭头操作符或 Lambda 操作符
+                  该操作符将 Lambda 表达式分成两部分：
+
+左侧：函数式接口中抽象方法的参数列表
+右侧：函数式接口中抽象方法的实现，即 Lambda 体
+
+Lambda 表达式需要函数式接口的支持！
+
+二、函数式接口：接口中只有一个抽象方法的接口，称为函数式接口。 函数式接口可以使用 @FunctionalInterface 进行注解
+               说明该接口必须是函数式接口
+
+Lambda 表达式就是对函数式接口中抽象方法的实现！
+
+三、Lambda 表达式的语法格式
+
+语法格式一：无参数，无返回值
+    () -> System.out.println("Java8 的 Lambda 表达式");
+
+语法格式二：有一个参数，无返回值
+    (s) -> System.out.println(s);
+
+语法格式三：若Lambda表达式的参数列表只有一个参数时，小括号可以省略不写
+    s -> System.out.println(s);
+
+语法格式四：多个参数，有返回值，并且 Lambda 体中有多条语句
+    (x, y) -> {
+            System.out.println("Lambda体中有多条语句");
+            return Integer.compare(x.length(), y.length());
+        };
+
+语法格式五：若 Lambda 体中只有一条语句时，大括号和 return 都可以省略不写
+    (x, y) -> Integer.compare(x.length(), y.length());
+
+语法格式六：Lambda 表达式参数列表中的数据类型可以省略不写，因为 Java 编译器可以通过上下文推断出对应的数据类型
+           即 “类型推断”
+    (String x, String y) -> Integer.compare(x.length(), y.length());
+ */
+public class LambdaTest {
+
+    @Test
+    public void test4(){
+        Comparator<String> com2 = (String x, String y) -> Integer.compare(x.length(), y.length());
+
+        int c = com2.compare("abc", "hello");
+        System.out.println(c);
+    }
+
+    @Test
+    public void test3(){
+        Comparator<String> com1 = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return Integer.compare(o1.length(), o2.length());
+            }
+        };
+
+        System.out.println("--------------------------------------------");
+
+        Comparator<String> com2 = (x, y) -> {
+            System.out.println("Lambda体中有多条语句");
+            return Integer.compare(x.length(), y.length());
+        };
+
+        int c = com2.compare("abc", "hello");
+        System.out.println(c);
+    }
+
+    @Test
+    public void test2(){
+        Consumer<String> con = new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                System.out.println(s);
+            }
+        };
+        con.accept("Hello！");
+
+        System.out.println("-----------------------------------------");
+
+        Consumer<String> con2 = s -> System.out.println(s);
+        con2.accept("中文！");
+    }
+
+    @Test
+    public void test1(){
+        Runnable r1 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("原来的匿名内部类");
+            }
+        };
+        r1.run();
+
+        System.out.println("------------------------------------");
+
+        Runnable r2 = () -> System.out.println("Java8 的 Lambda 表达式");
+        r2.run();
+    }
+
+}
+
+```
+
+```java
+import java.util.Objects;
+
+public class Employee {
+
+    private Integer id;
+    private String name;
+    private Integer age;
+    private Double salary;
+    private Status status;
+
+    public Employee() {
+    }
+
+    public Employee(String name, Integer age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public Employee(Integer id, String name, Integer age, Double salary) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
+
+    public Employee(Integer id, String name, Integer age, Double salary, Status status) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(age, employee.age) &&
+                Objects.equals(salary, employee.salary) &&
+                status == employee.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, salary, status);
+    }
+
+    public enum Status{
+        FREE,
+        BUSY,
+        VOCATION;
+    }
+}
+```
+
+```java
+@FunctionalInterface
+public interface MyInterface {
+
+    public void show();
+
+}
+
+```
+
+```java
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/*
+1.	调用 Collections.sort() 方法，通过定制排序比较两个 Employee (先按年龄比，年龄相同按姓名比)，
+使用 Lambda 作为参数传递。
+2.	①声明函数式接口，接口中声明抽象方法，public String getValue(String str);
+②声明类 TestLambda ，类中编写方法使用接口作为参数，将一个字符串转换成大写，并作为方法的返回值。
+③再将一个字符串的第2个和第4个索引位置进行截取子串。
+3.	①声明一个带两个泛型的函数式接口，泛型类型为<T, R>  T 为参数，R 为返回值
+②接口中声明对应抽象方法
+③在 TestLambda 类中声明方法，使用接口作为参数，计算两个 long 型参数的和。
+④再计算两个 long 型参数的乘积。
+ */
+public class LambdaExer {
+
+    @Test
+    public void test3(){
+        Long l1 = getValue(10L, 20L, (x, y) -> x + y);
+        System.out.println(l1);
+
+        Long l2 = getValue(10L, 20L, (x, y) -> x * y);
+        System.out.println(l2);
+    }
+
+    public Long getValue(Long l1, Long l2, MyBiFunction<Long, Long> mf){
+        return mf.op(l1, l2);
+    }
+
+    @Test
+    public void test2(){
+        String str1 = strHandler("abcde", (s) -> s.toUpperCase());
+        System.out.println(str1);
+
+        System.out.println("---------------------------------");
+
+        String str2 = strHandler("我大中文威武!", (s) -> s.substring(2, 5));
+        System.out.println(str2);
+    }
+
+    public String strHandler(String str, MyFunction mf){
+        return mf.getValue(str);
+    }
+
+    //测试数据
+    List<Employee> list = Arrays.asList(
+            new Employee(101, "张三", 18, 9999.99),
+            new Employee(102, "李四", 20, 5555.55),
+            new Employee(103, "王五", 8, 7777.77),
+            new Employee(104, "赵六", 35, 6666.66),
+            new Employee(105, "田七", 15, 8888.88)
+    );
+
+    @Test
+    public void test1(){
+        Collections.sort(list, (x, y) -> {
+            if(x.getAge().equals(y.getAge())){
+                return x.getName().compareTo(y.getName());
+            }else{
+                return -x.getAge().compareTo(y.getAge());
+            }
+        });
+
+        for (Employee e : list) {
+            System.out.println(e);
+        }
+    }
+}
+
+```
+
+```java
+@FunctionalInterface
+public interface MyFunction {
+
+    public String getValue(String str);
+
+}
+```
+
+```java
+@FunctionalInterface
+public interface MyBiFunction<T, R> {
+
+    public R op(T l1, T l2);
+
+}
+```
+
+### 内置的四大核心函数式接口
+
+```java
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+/*
+一、Java8 内置的四大核心函数式接口：
+
+Consumer<T> : 消费型接口
+    void accept(T t);
+
+Supplier<T> : 供给型接口
+    T get();
+
+Function<T, R> : 函数型接口
+    R apply(T t);
+
+Predicate<T> : 断言型接口 / 判断型接口
+    boolean test(T t);
+ */
+public class FunctionalInterfaceTest {
+
+    //Predicate<T> : 断言型接口 / 判断型接口
+    //需求：过滤字符串，并存入集合中
+    @Test
+    public void test4(){
+        List<String> list = Arrays.asList("www", "test", "com", "hello", "lambda");
+
+        List<String> strs = filterStr(list, (s) -> s.length() > 3);
+
+        for (String str : strs) {
+            System.out.println(str);
+        }
+    }
+
+    public List<String> filterStr(List<String> list, Predicate<String> pre){
+        List<String> newStr = new ArrayList<>();
+
+        for (String s : list) {
+            if(pre.test(s)){
+                newStr.add(s);
+            }
+        }
+
+        return newStr;
+    }
+
+    //Function<T, R> : 函数型接口
+    //需求：处理字符串，生成新字符串
+    @Test
+    public void test3(){
+        String str1 = strHandler("abcde", (s) -> s.toUpperCase());
+        System.out.println(str1);
+
+        System.out.println("------------------------------------");
+
+        String str2 = strHandler("我大中文威武!", (s) -> s.substring(2, 5));
+        System.out.println(str2);
+
+    }
+
+    public String strHandler(String str, Function<String, String> fun){
+        return fun.apply(str);
+    }
+
+    //Supplier<T> : 供给型接口
+    //需求：生产整数，并存入集合中
+    @Test
+    public void test2(){
+        List<Integer> list = getNumber(10, () -> (int) (Math.random() * 101));
+
+        for (Integer num : list) {
+            System.out.println(num);
+        }
+    }
+
+    public List<Integer> getNumber(int n, Supplier<Integer> sup){
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            list.add(sup.get());
+        }
+
+        return list;
+    }
+
+
+    //Consumer<T> : 消费型接口
+    @Test
+    public void test1(){
+        happy(10000, (d) -> System.out.println("张楚岚喜欢大宝剑，每次消费 " + d + " 元"));
+    }
+
+    public void happy(double money, Consumer<Double> con){
+        con.accept(money);
+    }
+}
+```
+
+### 方法引用
+
+```java
+import org.junit.Test;
+
+import java.io.PrintStream;
+import java.util.Comparator;
+import java.util.function.*;
+
+/*
+一、方法引用：若 Lambda 表达式的 Lambda 体中，需要实现的功能，已经有方法提供了实现，我们可以选择使用方法引用
+             （可以理解方法引用是 Lambda 表达式的另外一种表现形式）
+
+二、方法引用的格式
+
+对象的引用 :: 实例方法名
+
+类名 :: 静态方法名
+
+类名 :: 实例方法名
+
+三、方法引用的注意：
+①方法引用中方法的参数列表与返回值类型必须与 函数式接口中 抽象方法的参数列表和返回值类型保持一致！
+
+②返回值类型相同的情况下，函数式接口中参数列表的第一个参数，是方法引用方法的调用者，第二个参数（或无参）
+ 是方法引用方法的参数时，可以使用  类名::实例方法名
+
+四、构造器引用
+
+    格式：
+        类名::new
+
+注意：构造器引用的参数列表与函数式接口中抽象方法的参数列表保持一致！
+
+五、数组引用
+    格式：
+        类型[]::new
+ */
+public class MethodRefTest {
+
+    @Test
+    public void test8(){
+        Function<Integer, Employee[]> fun = (i) -> new Employee[i];
+
+        System.out.println("---------------------------------");
+
+        Function<Integer, Employee[]> fun2 = Employee[]::new;
+        Employee[] emps = fun2.apply(10);
+        System.out.println(emps.length);
+    }
+
+    @Test
+    public void test7(){
+        BiFunction<String, Integer, Employee> bf = (s, i) -> new Employee(s, i);
+
+        System.out.println("------------------------------------");
+
+        BiFunction<String, Integer, Employee> bf2 = Employee::new;
+        Employee emp = bf2.apply("张三", 18);
+        System.out.println(emp);
+    }
+
+    //T get();
+    //Employee();
+    @Test
+    public void test6(){
+        Supplier<Employee> sup1 = () -> new Employee();
+
+        System.out.println("---------------------------------");
+
+        Supplier<Employee> sup2 = Employee::new;
+    }
+
+    //类名 :: 实例方法名
+    //String getName()
+    //R apply(T t)
+    @Test
+    public void test5(){
+        Function<Employee, String> fun = (e) -> e.getName();
+
+        System.out.println("-----------------------------------");
+
+        Function<Employee, String> fun2 = Employee::getName;
+
+    }
+
+    //boolean equals(Object anObject)
+    //boolean test(T t, U u);
+    @Test
+    public void test4(){
+        BiPredicate<String, String> bp = (x, y) -> x.equals(y);
+
+        System.out.println("-------------------------------------------");
+
+        BiPredicate<String, String> bp2 = String::equals;
+    }
+
+    //类名 :: 静态方法名
+    //int compare(int x, int y)
+    //int compare(T o1, T o2);
+    @Test
+    public void test3(){
+        Comparator<Integer> com1 = (x, y) -> Integer.compare(x, y);
+
+        System.out.println("------------------------------------------");
+
+        Comparator<Integer> com2 = Integer::compare;
+    }
+
+    //对象的引用 :: 实例方法名
+    //String getName()
+    //T get();
+    @Test
+    public void test2(){
+        Employee emp = new Employee();
+
+        Supplier<String> sup = () -> emp.getName();
+
+        System.out.println("----------------------------------");
+
+        Supplier<String> sup2 = emp::getName;
+
+    }
+
+    //void println(String x)
+    //void accept(T t);
+    @Test
+    public void test1(){
+        PrintStream ps = System.out;
+        Consumer<String> con1 = (s) -> ps.println(s);
+        con1.accept("abcde");
+
+        System.out.println("----------------------------------");
+
+        Consumer<String> con2 = ps::println;
+        con2.accept("abcde");
+    }
+
+}
+```
+
+### Stream 操作的三个步骤
+
+```java
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+/*
+一、Stream 操作的三个步骤：
+
+1. “创建流”
+
+2. 中间操作
+
+3. 终止操作
+
+ */
+public class StreamAPITest1 {
+
+    @Test
+    public void test1(){
+        //1. 通过 Collection 系列集合的方法 stream()
+        List<String> list = new ArrayList<>();
+        Stream<String> stream1 = list.stream();
+
+        //2. 通过 Arrays 类中的静态方法 stream()
+        Integer[] array = new Integer[10];
+        Stream<Integer> stream2 = Arrays.stream(array);
+
+        //3. 通过 Stream 类中的静态方法 of()
+        Stream<Integer> stream3 = Stream.of(1, 2, 3, 4, 5);
+
+        //4. 创建无限流
+        //迭代
+        Stream<Integer> stream4 = Stream.iterate(0, (x) -> x + 2);
+        stream4.limit(10)  //中间操作
+               .forEach(System.out::println); //终止操作
+
+        System.out.println("---------------------------------");
+
+        //生成
+        Stream<Double> stream5 = Stream.generate(Math::random);
+        stream5.limit(5).forEach(System.out::println);
+    }
+
+}
+```
+
+```java
+/*
+一、Stream 操作的三个步骤：
+
+1. 创建流
+
+2. "中间操作"
+
+3. 终止操作
+ */
+public class StreamAPITest2 {
+
+    //测试数据
+    List<Employee> list = Arrays.asList(
+            new Employee(101, "张三", 18, 9999.99, Employee.Status.FREE),
+            new Employee(102, "李四", 20, 5555.55, Employee.Status.BUSY),
+            new Employee(103, "王五", 8, 7777.77, Employee.Status.VOCATION),
+            new Employee(104, "赵六", 35, 6666.66, Employee.Status.FREE),
+            new Employee(105, "田七", 15, 8888.88, Employee.Status.BUSY)
+    );
+
+    /*
+    排序
+    sorted()——自然排序
+    sorted(Comparator com)——定制排序
+     */
+    @Test
+    public void test6(){
+        list.stream().sorted((e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary())).forEach(System.out::println);
+    }
+
+    /*
+    映射
+    map——接收 Lambda ， 将元素转换成其他形式或提取信息。接收一个函数作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素。
+     */
+    @Test
+    public void test5(){
+        /*List<String> list = Arrays.asList("www", "test", "com");
+        list.stream().map((s) -> s.toUpperCase()).forEach(System.out::println);*/
+
+        System.out.println("---------------------------------------");
+
+        list.stream().map(Employee::getName).forEach(System.out::println);
+    }
+
+    /*
+    筛选与切片
+    filter——接收 Lambda ， 从流中排除某些元素。
+    limit——截断流，使其元素不超过给定数量。
+    skip(n) —— 跳过元素，返回一个扔掉了前 n 个元素的流。若流中元素不足 n 个，则返回一个空流。与 limit(n) 互补
+    distinct——筛选，通过流所生成元素的 hashCode() 和 equals() 去除重复元素
+     */
+    @Test
+    public void test4(){
+        list.stream()
+                .distinct()
+                .forEach(System.out::println);
+    }
+
+    @Test
+    public void test3(){
+        list.stream()
+                .filter((e) -> e.getSalary() > 6000)
+                .skip(2)
+                .forEach(System.out::println);
+    }
+
+    @Test
+    public void test2(){
+        list.stream()
+            .filter((e) -> {
+                System.out.println("短路！");
+                return e.getSalary() > 6000;
+            })
+            .limit(2)
+            .forEach(System.out::println);
+    }
+
+    @Test
+    public void test1(){
+        //中间操作：不会做任何处理
+        Stream<Employee> stream = list.stream().filter((e) -> e.getSalary() > 6000);
+
+        //终止操作：一次性处理全部内容，即“惰性求值”或“延迟加载”
+        stream.forEach(System.out::println); //内部迭代
+    }
+}
+
+```
+
+```java
+import org.junit.Test;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+/*
+一、Stream 操作的三个步骤：
+
+1. 创建流
+
+2. 中间操作
+
+3. "终止操作"
+ */
+public class StreamAPITest3 {
+    //测试数据
+    List<Employee> list = Arrays.asList(
+            new Employee(101, "张三", 18, 9999.99, Status.FREE),
+            new Employee(102, "李四", 20, 5555.55, Status.BUSY),
+            new Employee(103, "王五", 8, 7777.77, Status.VOCATION),
+            new Employee(104, "赵六", 35, 6666.66, Status.FREE),
+            new Employee(105, "田七", 15, 8888.88, Status.BUSY)
+    );
+
+    /*
+    收集
+    collect——将流转换为其他形式。接收一个 Collector接口的实现，用于给Stream中元素做汇总的方法
+     */
+    @Test
+    public void test9(){
+        String str = list.stream().map(Employee::getName).collect(Collectors.joining(",", "===", "==="));
+        System.out.println(str);
+    }
+
+    @Test
+    public void test8(){
+        Map<Boolean, List<Employee>> map = list.stream().collect(Collectors.partitioningBy((e) -> e.getSalary() > 6000));
+
+        System.out.println(map);
+    }
+
+    @Test
+    public void test7(){
+        Map<Status, List<Employee>> map = list.stream().collect(Collectors.groupingBy((e) -> e.getStatus()));
+
+        Set<Map.Entry<Status, List<Employee>>> set = map.entrySet();
+
+        for (Map.Entry<Status, List<Employee>> entry : set) {
+            Status key = entry.getKey();
+            System.out.println(key);
+
+            List<Employee> values = entry.getValue();
+
+            for (Employee e : values) {
+                System.out.println(e);
+            }
+
+            System.out.println("---------------------------------");
+        }
+    }
+
+    @Test
+    public void test6(){
+        DoubleSummaryStatistics dss = list.stream().collect(Collectors.summarizingDouble(Employee::getSalary));
+
+        System.out.println(dss.getSum());
+        System.out.println(dss.getAverage());
+        System.out.println(dss.getCount());
+        System.out.println(dss.getMax());
+        System.out.println(dss.getMin());
+    }
+
+    @Test
+    public void test5(){
+        Set<String> set = list.stream().map(Employee::getName).collect(Collectors.toSet());
+        set.forEach(System.out::println);
+
+        System.out.println("----------------------------------------------");
+
+        List<String> newList = list.stream().map(Employee::getName).collect(Collectors.toList());
+
+        System.out.println("----------------------------------------------");
+
+        HashSet<String> hs = list.stream().map(Employee::getName).collect(Collectors.toCollection(HashSet::new));
+    }
+
+    /*
+    归约
+    reduce(T identity, BinaryOperator) / reduce(BinaryOperator) ——可以将流中元素反复结合起来，得到一个值。
+     */
+    @Test
+    public void test4(){
+        List<Integer> list = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+
+        Integer num = list.stream().reduce(0, (x, y) -> x + y);
+        System.out.println(num);
+
+        System.out.println("--------------------------------------");
+
+        Optional<Integer> op = list.stream().reduce((x, y) -> x + y);
+
+    }
+
+    /*
+    查找与匹配
+    allMatch——检查是否匹配所有元素
+    anyMatch——检查是否至少匹配一个元素
+    noneMatch——检查是否没有匹配所有元素
+    findFirst——返回第一个元素
+    findAny——返回当前流中的任意元素
+    count——返回流中元素的总个数
+    max——返回流中最大值
+    min——返回流中最小值
+     */
+    @Test
+    public void test3(){
+        long count = list.stream().map(Employee::getSalary).count();
+        System.out.println(count);
+
+        Optional<Employee> op = list.stream().max((e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary()));
+        System.out.println(op.get());
+
+        Optional<Double> op2 = list.stream().map(Employee::getSalary).min(Double::compare);
+        System.out.println(op2.get());
+    }
+
+    @Test
+    public void test2(){
+        Optional<Employee> op1 = list.stream().sorted((e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary())).findFirst();
+        Employee emp = op1.get();
+        System.out.println(emp);
+
+        System.out.println("------------------------------------------");
+
+        Optional<Employee> op2 = list.parallelStream().sorted((e1, e2) -> Double.compare(e1.getSalary(), e2.getSalary())).findAny();
+        System.out.println(op2.get());
+    }
+
+    @Test
+    public void test1(){
+        boolean b1 = list.stream().allMatch((e) -> e.getStatus().equals(Status.FREE));
+        System.out.println(b1);
+
+        boolean b2 = list.stream().anyMatch((e) -> e.getStatus().equals(Status.FREE));
+        System.out.println(b2);
+
+        boolean b3 = list.stream().noneMatch((e) -> e.getStatus().equals(Status.FREE));
+        System.out.println(b3);
+    }
+
+}
+```
+
+### 并行流和串行流
+
+```java
+import org.junit.Test;
+
+import java.util.OptionalLong;
+import java.util.stream.LongStream;
+
+public class ParallelTest {
+
+    @Test
+    public void test1(){
+        long sum = 0L;
+
+        for (long i = 0L; i <= 100000000000L; i++) {
+            sum += i;
+        }
+
+        System.out.println(sum); //43 - 3327
+    }
+
+    @Test
+    public void test2(){
+        long sum = LongStream.rangeClosed(0L, 1000000000000L)
+                .parallel()
+                .sum();
+
+        System.out.println(sum); //119 - 802
+    }
+}
+```
+
+### Optional
+
+```java
+import org.junit.Test;
+
+import java.util.Optional;
+
+/*
+Optional.of(T t) : 创建一个 Optional 实例
+Optional.empty() : 创建一个空的 Optional 实例
+Optional.ofNullable(T t):若 t 不为 null,创建 Optional 实例,否则创建空实例
+isPresent() : 判断是否包含值
+orElse(T t) :  如果调用对象包含值，返回该值，否则返回t
+orElseGet(Supplier s) :如果调用对象包含值，返回该值，否则返回 s 获取的值
+map(Function f): 如果有值对其处理，并返回处理后的Optional，否则返回 Optional.empty()
+flatMap(Function mapper):与 map 类似，要求返回值必须是Optional
+ */
+public class OptionalTest {
+
+    @Test
+    public void test3(){
+        Optional<Employee> op = Optional.ofNullable(new Employee("张三", 29));
+
+        /*Optional<String> op2 = op.map((e) -> e.getName());
+        if(op2.isPresent()){
+            System.out.println(op2.get());
+        }*/
+
+        Optional<String> op2 = op.flatMap((e) -> Optional.ofNullable(e.getName()));
+    }
+
+    @Test
+    public void test2(){
+        Optional<Object> op = Optional.ofNullable(new Employee("张三", 29));
+
+        /*Object emp = op.orElse(new Employee("李四", 29));
+        System.out.println(emp);*/
+
+        Object emp = op.orElseGet(() -> {
+            System.out.println("进一步操作");
+            return new Employee("李四", 18);
+        });
+        System.out.println(emp);
+    }
+
+    @Test
+    public void test1(){
+        /*Optional<Employee> op = Optional.of(new Employee("张三", 18));
+        Employee emp = op.get();
+        System.out.println(emp);*/
+
+        /*Optional<Object> empty = Optional.empty();
+        System.out.println(empty.get());*/
+
+        Optional<Employee> op1 = Optional.ofNullable(new Employee("张三", 18));
+        if(op1.isPresent()){
+            System.out.println(op1.get());
+        }
+    }
+
+}
+```
+
+## 注解
+
+```java
+import org.junit.Test;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.List;
+
+/*
+一、注解：是 JDK1.5后出的特性，是一个元数据，是一个代码级别的说明
+          在 Java 中以 “@注解名” 的形式呈现
+
+    String name = "test";
+
+1. Java 内置的常用注解
+@Override ： 说明注解的方法必须是重写方法
+@Deprecated : 说明已经过时过期
+@SuppressWarnings : 抑制编译器警告
+
+2. 自定义注解
+
+    public @interface 注解名{
+
+    }
+
+3. 元注解
+@Target : 用于描述注解能够修饰哪些程序元素
+@Retention : 用于描述注解的生命周期
+ */
+public class AnnotationTest {
+
+    //利用反射获取注解中的数据
+    @Test
+    public void test1(){
+        Class clazz = Employee.class;
+
+        Annotation[] annotations = clazz.getAnnotations();
+
+        for (Annotation annotation : annotations) {
+            MyAnnotation ma = (MyAnnotation) annotation;
+            System.out.println(ma.value());
+        }
+    }
+
+    public static void main(String[] args) {
+        Employee emp = new Employee("张三", 18);
+        System.out.println(emp.getName());
+
+        @SuppressWarnings("unused")
+        List<String> list = new ArrayList<>();
+    }
+
+}
+```
+
+```java
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.LOCAL_VARIABLE;
+
+@Repeatable(MyAnnotations.class)
+@Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, TYPE_PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MyAnnotation {
+
+    String value() default "hello";
+
+}
+
+```
+
+```java
+import com.sun.istack.internal.NotNull;
+
+import java.util.Objects;
+
+@MyAnnotation
+public class Employee {
+
+    private Integer id;
+    private String name;
+    private Integer age;
+    private Double salary;
+    private Status status;
+
+    public Employee() {
+    }
+
+    public Employee(String name, Integer age){
+        this.name = name;
+        this.age = age;
+    }
+
+    public Employee(Integer id, String name, Integer age, Double salary) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
+
+    public Employee(Integer id, String name, Integer age, Double salary, Status status) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.status = status;
+    }
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @MyAnnotation("test")
+    public void sleep(){
+        System.out.println("睡觉");
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(age, employee.age) &&
+                Objects.equals(salary, employee.salary) &&
+                status == employee.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, salary, status);
+    }
+
+    public enum Status{
+        FREE,
+        BUSY,
+        VOCATION;
+    }
+}
+
+```
+
+```java
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.LOCAL_VARIABLE;
+
+@Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MyAnnotations {
+
+    MyAnnotation[] value();
+
+}
+
+```
+
