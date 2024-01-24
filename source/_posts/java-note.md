@@ -19634,3 +19634,1653 @@ public @interface MyAnnotations {
 
 ```
 
+## jdbc
+
+```java
+import org.junit.Test;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public class DriverTest {
+
+    /*
+    4. [次最终版]将四个连接必须的字符串提取到 properties 属性文件中
+     */
+    @Test
+    public void test4() throws Exception {
+        Properties props = new Properties();
+        props.load(DriverTest.class.getClassLoader().getResourceAsStream("jdbc.properties"));
+        String driverClassName = props.getProperty("driverClassName");
+        String url = props.getProperty("url");
+        String user = props.getProperty("user");
+        String password = props.getProperty("password");
+
+        Class.forName(driverClassName);
+
+        Connection conn = DriverManager.getConnection(url, user, password);
+
+        System.out.println(conn);
+    }
+
+    /*
+    3. JDBC 规范中规定，数据库厂商必须注册驱动
+     */
+    @Test
+    public void test3() throws Exception {
+        String driverClassName = "com.mysql.cj.jdbc.Driver";
+        String url = "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC";
+        String user = "root";
+        String password = "123456";
+
+        //1. 加载驱动
+        Class.forName(driverClassName);
+
+        //2. 获取连接
+        Connection conn = DriverManager.getConnection(url, user, password);
+
+        System.out.println(conn);
+    }
+
+    /*
+    2. 利用 java.sql.DriverManager 驱动管理类获取连接
+     */
+    @Test
+    public void test2() throws Exception {
+        String driverClassName = "com.mysql.cj.jdbc.Driver";
+        String url = "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC";
+        String user = "root";
+        String password = "123456";
+
+        Class clazz = Class.forName(driverClassName);
+        Driver driver = (Driver) clazz.newInstance();
+
+        //1. 注册驱动
+        DriverManager.registerDriver(driver);
+
+        //2. 获取连接
+        Connection conn = DriverManager.getConnection(url, user, password);
+
+        System.out.println(conn);
+    }
+
+    /*
+    1. 利用反射获取驱动
+
+    ①将 MySQL 厂商提供的驱动导入到当前项目的 lib 目录中
+    ②右键 jar 包，Add as Library
+
+    缺点：传递用户名和密码，需要创建 Properties 实例，有一点点麻烦
+     */
+    @Test
+    public void test1() throws Exception {
+        String driverClassName = "com.mysql.cj.jdbc.Driver";
+        Class clazz = Class.forName(driverClassName);
+        //1. 获取驱动
+        Driver driver = (Driver) clazz.newInstance();
+
+        //2. 获取连接
+        String url = "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=UTC";
+        Properties info = new Properties();
+        info.setProperty("user", "root");
+        info.setProperty("password", "123456");
+
+        Connection conn = driver.connect(url, info);
+
+        System.out.println(conn);
+    }
+
+}
+```
+
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public class JDBCUtils {
+
+    /**
+     * 获取连接
+     * @return
+     * @throws Exception
+     */
+    public static Connection getConnection() throws Exception {
+        Properties props = new Properties();
+        props.load(DriverTest.class.getClassLoader().getResourceAsStream("jdbc.properties"));
+        String driverClassName = props.getProperty("driverClassName");
+        String url = props.getProperty("url");
+        String user = props.getProperty("user");
+        String password = props.getProperty("password");
+
+        Class.forName(driverClassName);
+
+        return DriverManager.getConnection(url, user, password);
+    }
+
+    /**
+     * 关闭连接
+     * @param conn
+     * @param ps
+     */
+    public static void close(Connection conn, PreparedStatement ps){
+        if(ps != null){
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(conn != null){
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+### 使用 PreparedStatement 完成增删改
+
+```java
+import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+
+/*
+使用 PreparedStatement 完成增删改
+ */
+public class PreparedStatementTest1 {
+
+    @Test
+    public void test3(){
+        /*String sql = "update customers set email = ? where id = ?";
+        int row = update(sql, "jg@abc.com", 19);
+
+        if(row > 0){
+            System.out.println("更新成功！");
+        }else{
+            System.out.println("更新失败！");
+        }*/
+
+        String sql = "insert into `order`(order_name, order_date) values(?,?)";
+        int row = update(sql, "FF", "1999-9-9");
+        System.out.println("已影响" + row + "行");
+    }
+
+    //通过的增删改，适用于任何表
+    public int update(String sql, Object ... args){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int row = 0;
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 获取 PreparedStatement，用于发送 SQL
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i+1, args[i]);
+            }
+
+            //4. 执行 SQL
+            row = ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //5. 关闭连接
+            JDBCUtils.close(conn, ps);
+        }
+
+        return row;
+    }
+
+    //删除数据
+    @Test
+    public void test2(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 获取 PreparedStatement，用于发送 SQL
+            String sql = "delete from customers where id = ?";
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            ps.setInt(1, 18);
+
+            //4. 执行 SQL
+            int row = ps.executeUpdate();
+            System.out.println("已影响" + row + "行");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //5. 关闭连接
+            JDBCUtils.close(conn, ps);
+        }
+
+    }
+
+    //添加数据
+    @Test
+    public void test1(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 通过当前连接获取 PreparedStatement， 用于发送 SQL
+            String sql = "insert into customers(id, name, email, birth) values(?,?,?,?)"; //? : 占位符
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            ps.setInt(1, 19);
+            ps.setString(2, "杰哥");
+            ps.setString(3, "jiege@abc.com");
+            ps.setDate(4, new Date(new java.util.Date().getTime()));//java.sql.Date  java.util.Date
+
+            //4. 执行 SQL
+            int row = ps.executeUpdate();
+            System.out.println("已影响" + row + "行");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //5. 关闭连接
+            JDBCUtils.close(conn, ps);
+        }
+
+    }
+
+//    @Test
+//    public void test1(){
+//        //1. 获取连接
+//        Connection conn = JDBCUtils.getConnection();
+//
+//        //2. 通过当前连接获取 PreparedStatement， 用于发送 SQL
+//        String sql = "insert into customers(id, name, email, birth) values(?,?,?,?)"; //? : 占位符
+//        PreparedStatement ps = conn.prepareStatement(sql);
+//
+//        //3. 填充占位符
+//        ps.setInt(1, 19);
+//        ps.setString(2, "杰哥");
+//        ps.setString(3, "jiege@abc.com");
+//        ps.setDate(4, new Date(new java.util.Date().getTime()));//java.sql.Date  java.util.Date
+//
+//        //4. 执行 SQL
+//        int row = ps.executeUpdate();
+//        System.out.println("已影响" + row + "行");
+//
+//        //5. 关闭连接
+//        JDBCUtils.close(conn, ps);
+//    }
+
+}
+
+```
+
+```java
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import org.junit.Test;
+
+import java.sql.Statement;
+
+public class TestStatement {
+
+	// 弊端：需要拼写sql语句，并且存在SQL注入的问题
+	@Test
+	public void testLogin() {
+		Scanner scan = new Scanner(System.in);
+		System.out.print("用户名：");
+		String userName = scan.nextLine();
+		System.out.print("密   码：");
+		String password = scan.nextLine();
+
+		String sql = "select user, password from user_table where user = '"
+				+ userName + "' and password = '" + password + "'";
+		
+		System.out.println(sql);
+		
+		User user = get(sql, User.class);
+		if(user != null){
+			System.out.println("登陆成功!");
+		}else{
+			System.out.println("用户名或密码错误！");
+		}
+	}
+
+	public <T> T get(String sql, Class<T> clazz) {// (sql, Customer.class)
+		T t = null;
+
+		Connection conn = null;
+		Statement stam = null;
+		ResultSet rs = null;
+		try {
+			conn = JDBCUtils.getConnection();
+
+			stam = conn.createStatement();
+
+			rs = stam.executeQuery(sql);
+
+			// 获取结果集的元数据
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			// 获取结果集的列数
+			int columnCount = rsmd.getColumnCount();
+
+			if (rs.next()) {
+
+				t = clazz.newInstance();
+
+				for (int i = 0; i < columnCount; i++) {
+					// //1. 获取列的名称
+					// String columnName = rsmd.getColumnName(i+1);
+
+					// 1. 获取列的别名
+					String columnName = rsmd.getColumnLabel(i + 1); // 注意：
+																	// 获取结果集中（相当于数据表）列的名称（别名）
+
+					// 2. 根据列名获取对应数据表中的数据
+					Object columnVal = rs.getObject(columnName);
+
+					// 3. 将数据表中得到的数据，封装进对象
+					Field field = clazz.getDeclaredField(columnName); // 注意：反射根据Java中类的属性获取
+																		// Field对象
+					field.setAccessible(true);
+					field.set(t, columnVal);
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+//			JDBCUtils.close(rs, stam, conn);
+		}
+
+		return t;
+	}
+
+}
+
+```
+
+```java
+public class User {
+
+	private String user;
+	private String password;
+
+	public User() {
+	}
+
+	public User(String user, String password) {
+		super();
+		this.user = user;
+		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "User [user=" + user + ", password=" + password + "]";
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}
+```
+
+```java
+driverClassName=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://192.168.17.21:3306/test?serverTimezone=UTC
+user=root
+password=123456
+
+#driverClassName=oracle.jdbc.driver.OracleDriver
+#url=jdbc:oracle:thin:@localhost:1521:orcl
+#user=scott
+#password=tiger
+```
+
+### 使用 PreparedStatement 完成查询
+
+```java
+import org.junit.Test;
+
+import java.lang.reflect.Field;
+import java.sql.*;
+
+/*
+使用 PreparedStatement 完成查询
+ */
+public class PreparedStatementTest1 {
+
+    //通用的查询，适用于任何表
+    @Test
+    public void test3(){
+        /*String sql = "select id, name, email, birth from customers where id = ?";
+        Customer customer = query(Customer.class, sql, 19);
+        System.out.println(customer);*/
+
+        String sql = "select order_id orderId, order_name orderName, order_date orderDate from `order` where order_id = ?";
+        Order order = query(Order.class, sql, 5);
+        System.out.println(order);
+    }
+
+    /*
+    通用查询需要修改的位置：
+        1. 返回值类型处，利用泛型
+        2. 返回值的对象，利用反射
+        3. 结果集的处理，不能明确
+              ResultSetMetaData : 结果集的元数据
+                    getColumnCount() : 获取结果集的列数
+                    getColumnName() : 获取结果集的列名
+                    getColumnLabel() : 获取结果集列的别名，没有别名按getColumnName() 取
+    */
+    public <T> T query(Class<T> clazz, String sql, Object ... args){
+        T t = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 获取 PreparedStatement，用于发送SQL
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i+1, args[i]);
+            }
+
+            //4. 执行 SQL，得到 ResultSet 结果集
+            rs = ps.executeQuery();
+
+            //5. 获取结果集的元数据 ResultSetMetaData
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            //6. 获取结果集的列数
+            int columnCount = rsmd.getColumnCount();
+
+            //7. 获取结果集中的数据
+            while(rs.next()){
+                t = clazz.newInstance();
+
+                for (int i = 0; i < columnCount; i++) {
+                    //7.1 根据列的索引获取别名（名字）
+                    String columnName = rsmd.getColumnLabel(i + 1);//name
+
+                    //7.2 根据字段名获取数据
+                    Object columnValue = rs.getObject(columnName);
+
+                    //7.3 将散列的数据封装进对象(注意：必须使结果集列的别名，与属性名保持一致！！！！)
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(t, columnValue);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //8. 关闭连接
+            JDBCUtils.close(conn, ps, rs);
+        }
+        return t;
+    }
+
+//    public <T> T query(Class<T> clazz, String sql, Object ... args){
+//        T t = null;
+//
+//        //1. 获取连接
+//        Connection conn = JDBCUtils.getConnection();
+//
+//        //2. 获取 PreparedStatement，用于发送SQL
+//        PreparedStatement ps = conn.prepareStatement(sql);
+//
+//        //3. 填充占位符
+//        for (int i = 0; i < args.length; i++) {
+//            ps.setObject(i+1, args[i]);
+//        }
+//
+//        //4. 执行 SQL，得到 ResultSet 结果集
+//        ResultSet rs = ps.executeQuery();
+//
+//        //5. 获取结果集的元数据 ResultSetMetaData
+//        ResultSetMetaData rsmd = rs.getMetaData();
+//
+//        //6. 获取结果集的列数
+//        int columnCount = rsmd.getColumnCount();
+//
+//        //7. 获取结果集中的数据
+//        while(rs.next()){
+//            t = clazz.newInstance();
+//
+//            for (int i = 0; i < columnCount; i++) {
+//                //7.1 根据列的索引获取别名（名字）
+//                String columnName = rsmd.getColumnLabel(i + 1);//name
+//
+//                //7.2 根据字段名获取数据
+//                Object columnValue = rs.getObject(columnName);
+//
+//                //7.3 将散列的数据封装进对象(注意：必须使结果集列的别名，与属性名保持一致！！！！)
+//                Field field = clazz.getDeclaredField(columnName);
+//                field.setAccessible(true);
+//                field.set(t, columnValue);
+//            }
+//        }
+//
+//        //8. 关闭连接
+//        JDBCUtils.close(conn, ps, rs);
+//
+//        return t;
+//    }
+
+
+    /*
+      ORM(Object Relational Mapping): 对象关系映射
+          数据库中的一张表  ----  Java 中的一个类
+          数据表中的一个字段  ---- Java 中的一个属性
+          数据表中的一条数据  ---- Java 中的一个对象
+     */
+    @Test
+    public void test2(){
+        Customer cust = getCustomer();
+        System.out.println(cust);
+    }
+
+    /*
+    通用查询需要修改的位置：
+        1. 返回值类型处，利用泛型
+        2. 返回值的对象，利用反射
+        3. 结果集的处理，不能明确
+              ResultSetMetaData : 结果集的元数据
+                    getColumnCount() : 获取结果集的列数
+                    getColumnName() : 获取结果集的列名
+                    getColumnLabel() : 获取结果集列的别名，没有别名按getColumnName() 取
+    */
+    public Customer getCustomer(){
+        Customer cust = null;
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtils.getConnection();
+            String sql = "select id, name, email, birth from customers where id = ?";
+            ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, 19);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                Date birth = rs.getDate("birth");
+
+                //散列数据封装进对象
+                cust = new Customer(id, name, email, birth);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, rs);
+        }
+
+        return cust;
+    }
+
+    @Test
+    public void test1(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 获取 PreparedStatement，用于发送 SQL
+            String sql = "select id, name, email, birth from customers where id = ?";
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            ps.setInt(1, 19);
+
+            //4. 执行 SQL，得到 ResultSet 结果集（执行查询后生成的数据表）
+            rs = ps.executeQuery();
+
+            //5. 查询后生成结果集的处理
+            while(rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String email = rs.getString(3);
+                Date birth = rs.getDate(4);
+
+                System.out.println(id + "," + name + "," + email + "," + birth);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //6. 关闭连接
+            JDBCUtils.close(conn, ps, rs);
+        }
+    }
+
+    /*@Test
+    public void test1(){
+        //1. 获取连接
+        Connection conn = JDBCUtils.getConnection();
+
+        //2. 获取 PreparedStatement，用于发送 SQL
+        String sql = "select id, name, email, birth from customers where id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        //3. 填充占位符
+        ps.setInt(1, 19);
+
+        //4. 执行 SQL，得到 ResultSet 结果集（执行查询后生成的数据表）
+        ResultSet rs = ps.executeQuery();
+
+        //5. 查询后生成结果集的处理
+        while(rs.next()){
+            int id = rs.getInt(1);
+            String name = rs.getString(2);
+            String email = rs.getString(3);
+            Date birth = rs.getDate(4);
+
+            System.out.println(id + "," + name + "," + email + "," + birth);
+        }
+
+        //6. 关闭连接
+        JDBCUtils.close(conn, ps, rs);
+    }*/
+
+}
+
+```
+
+```java
+
+import java.sql.Date;
+
+public class Customer {
+
+    private Integer id;
+    private String name;
+    private String email;
+    private Date birth;
+
+    public Customer() {
+    }
+
+    public Customer(Integer id, String name, String email, Date birth) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.birth = birth;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getBirth() {
+        return birth;
+    }
+
+    public void setBirth(Date birth) {
+        this.birth = birth;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", birth=" + birth +
+                '}';
+    }
+}
+
+```
+
+```java
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.Properties;
+
+public class JDBCUtils {
+
+    private static DataSource ds = null;
+
+    static{
+        Properties props = new Properties();
+        try {
+            props.load(DataSourceTest.class.getClassLoader().getResourceAsStream("druid.properties"));
+
+            ds = DruidDataSourceFactory.createDataSource(props);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取连接
+     * @return
+     * @throws Exception
+     */
+    public static Connection getConnection() throws Exception {
+        return ds.getConnection();
+    }
+
+    /**
+     * 关闭连接
+     * @param conn
+     * @param ps
+     */
+    public static void close(Connection conn, PreparedStatement ps, ResultSet rs){
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(ps != null){
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(conn != null){
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+```
+
+```java
+import java.sql.Date;
+
+public class Order {
+
+    private Integer orderId;
+    private String orderName;
+    private Date orderDate;
+
+    public Order() {
+    }
+
+    public Order(Integer orderId, String orderName, Date orderDate) {
+        this.orderId = orderId;
+        this.orderName = orderName;
+        this.orderDate = orderDate;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", orderName='" + orderName + '\'' +
+                ", orderDate=" + orderDate +
+                '}';
+    }
+}
+```
+
+```java
+public class MyQueryRunner {
+
+    /**
+     * 考虑事务问题的通用增删改
+     * @param conn
+     * @param sql
+     * @param args
+     * @return
+     */
+    public int update(Connection conn, String sql, Object ... args){
+        PreparedStatement ps = null;
+        int row = 0;
+        try {
+            //2. 获取 PreparedStatement，用于发送 SQL
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i+1, args[i]);
+            }
+
+            //4. 执行 SQL
+            row = ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //5. 关闭连接
+            JDBCUtils.close(null, ps, null);
+        }
+
+        return row;
+    }
+
+    /**
+     * 通用增删改
+     * @param sql
+     * @param args
+     * @return
+     */
+    public int update(String sql, Object ... args){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        int row = 0;
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 获取 PreparedStatement，用于发送 SQL
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i+1, args[i]);
+            }
+
+            //4. 执行 SQL
+            row = ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //5. 关闭连接
+            JDBCUtils.close(conn, ps, null);
+        }
+
+        return row;
+    }
+
+
+    /**
+     * 通用查询
+     * @param clazz
+     * @param sql
+     * @param args
+     * @param <T>
+     * @return
+     */
+    public <T> T query(Class<T> clazz, String sql, Object ... args){
+        T t = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            //1. 获取连接
+            conn = JDBCUtils.getConnection();
+
+            //2. 获取 PreparedStatement，用于发送SQL
+            ps = conn.prepareStatement(sql);
+
+            //3. 填充占位符
+            for (int i = 0; i < args.length; i++) {
+                ps.setObject(i+1, args[i]);
+            }
+
+            //4. 执行 SQL，得到 ResultSet 结果集
+            rs = ps.executeQuery();
+
+            //5. 获取结果集的元数据 ResultSetMetaData
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            //6. 获取结果集的列数
+            int columnCount = rsmd.getColumnCount();
+
+            //7. 获取结果集中的数据
+            while(rs.next()){
+                t = clazz.newInstance();
+
+                for (int i = 0; i < columnCount; i++) {
+                    //7.1 根据列的索引获取别名（名字）
+                    String columnName = rsmd.getColumnLabel(i + 1);//name
+
+                    //7.2 根据字段名获取数据
+                    Object columnValue = rs.getObject(columnName);
+
+                    //7.3 将散列的数据封装进对象(注意：必须使结果集列的别名，与属性名保持一致！！！！)
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(t, columnValue);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //8. 关闭连接
+            JDBCUtils.close(conn, ps, rs);
+        }
+        return t;
+    }
+
+}
+```
+
+### 使用 PreparedStatement 完成图片处理
+
+```java
+import org.junit.Test;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+
+/*
+使用 PreparedStatement 完成图片处理
+ */
+public class PreparedStatementTest2 {
+
+    //查询图片
+    @Test
+    public void test2(){
+        InputStream in = null;
+        FileOutputStream fos = null;
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = JDBCUtils.getConnection();
+            String sql = "select id, name, email, birth, photo from customers where id = ?";
+            ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, 20);
+
+            rs = ps.executeQuery();
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                Date birth = rs.getDate("birth");
+
+                Customer customer = new Customer(id, name, email, birth);
+
+                System.out.println(customer);
+
+                //图片处理
+                Blob blob = rs.getBlob("photo");
+                in = blob.getBinaryStream();
+                fos = new FileOutputStream("./2.jpg");
+
+                byte[] b = new byte[1024];
+                int len = 0;
+                while((len = in.read(b)) != -1){
+                    fos.write(b, 0, len);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, rs);
+
+            if(in != null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    //添加图片
+    @Test
+    public void test1(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = JDBCUtils.getConnection();
+            String sql = "insert into customers values(?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, 20);
+            ps.setString(2, "魏干钧");
+            ps.setString(3, "wgj@abc.com");
+            ps.setString(4, "1999-9-9");
+
+            //图片的处理
+            ps.setBlob(5, new FileInputStream("./1.jpg"));
+
+            int row = ps.executeUpdate();
+            System.out.println("已影响" + row + "行");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, null);
+        }
+    }
+
+}
+```
+
+### 使用 PreparedStatement 完成批量处理
+
+```java
+import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+/*
+使用 PreparedStatement 完成批量处理
+ */
+public class PreparedStatementTest3 {
+
+    //批量处理
+    @Test
+    public void test2(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = JDBCUtils.getConnection();
+            String sql = "insert into emp values(?,?)";
+            ps = conn.prepareStatement(sql);
+
+            for (int i = 1; i <= 100000 ; i++) {
+                ps.setInt(1, i);
+                ps.setString(2, "emp_" + i);
+
+                //①积攒 SQL 语句
+                ps.addBatch();
+
+                if(i % 500 == 0){
+                    //②批量执行 SQL 语句
+                    ps.executeBatch();
+
+                    //③清空 SQL 语句
+                    ps.clearBatch();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, null);
+        }
+
+    }
+
+    @Test
+    public void test1(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = JDBCUtils.getConnection();
+
+            String sql = "insert into emp values(?,?)";
+            ps = conn.prepareStatement(sql);
+
+            for (int i = 1; i <= 100000; i++) {
+                ps.setInt(1, i);
+                ps.setString(2, "emp_"+i);
+
+                ps.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, ps, null);
+        }
+    }
+
+}
+
+```
+
+```java
+driverClassName=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://192.168.17.21:3306/test?serverTimezone=UTC&rewriteBatchedStatements=true
+user=root
+password=123456
+
+#driverClassName=oracle.jdbc.driver.OracleDriver
+#url=jdbc:oracle:thin:@localhost:1521:orcl
+#user=scott
+#password=tiger
+```
+
+```java
+import com.atguigu.jdbc.MyQueryRunner;
+import org.junit.Test;
+
+import java.util.Scanner;
+
+public class JDBCTest {
+
+    MyQueryRunner mqr = new MyQueryRunner();
+
+    @Test
+    public void test3(){
+        Scanner scan = new Scanner(System.in);
+
+        while(true){
+            System.out.println("请输入学生的考号：");
+            String examCard = scan.next();
+
+            String sql = "delete from examstudent where ExamCard = ?";
+            int row = mqr.update(sql, examCard);
+
+            if(row > 0){
+                System.out.println("删除成功！");
+                break;
+            }else{
+                System.out.println("删除失败，请重新输入！");
+            }
+        }
+    }
+
+    @Test
+    public void test2(){
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("请选择您要输入的类型：");
+        System.out.println("a.准考证号");
+        System.out.println("b.身份证号");
+
+        char key = scan.next().charAt(0);
+
+        switch (key){
+            case 'a':
+                //按准考证号查询
+                System.out.println("请输入准考证号：");
+                String examCard = scan.next();
+                String sql1 = "select FlowID flowID, Type type, IDCard, ExamCard examCard, StudentName studentName, " +
+                        "Location location, Grade grade from examstudent where ExamCard = ?";
+                Student stu1 = mqr.query(Student.class, sql1, examCard);
+
+                if(stu1 == null){
+                    System.out.println("查无此人，请重新进入程序");
+                }else{
+                    System.out.println(stu1);
+                }
+                break;
+            case 'b':
+                //按身份证号查询
+                System.out.println("请输入身份证号：");
+                String IDCard = scan.next();
+
+                String sql2 = "select FlowID flowID, Type type, IDCard, ExamCard examCard, StudentName studentName, " +
+                        "Location location, Grade grade from examstudent where IDCard = ?";
+                Student stu2 = mqr.query(Student.class, sql2, IDCard);
+
+                if(stu2 == null){
+                    System.out.println("查无此人，请重新进入程序");
+                }else{
+                    System.out.println(stu2);
+                }
+                break;
+            default:
+                System.out.println("您的输入有误，请重新进入程序");
+                break;
+        }
+    }
+
+    @Test
+    public void test1(){
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print("Type:");
+        int type = scan.nextInt();
+
+        System.out.print("IDCard:");
+        String IDCard = scan.next();
+
+        System.out.print("ExamCard:");
+        String examCard = scan.next();
+
+        System.out.print("StudentName:");
+        String studentName = scan.next();
+
+        System.out.print("Location:");
+        String location = scan.next();
+
+        System.out.print("Grade:");
+        int grade = scan.nextInt();
+
+        String sql = "insert into examstudent(Type, IDCard, ExamCard, StudentName, Location, Grade) values(?,?,?,?,?,?)";
+        int row = mqr.update(sql, type, IDCard, examCard, studentName, location, grade);
+
+        if(row > 0){
+            System.out.println("信息录入成功");
+        }else{
+            System.out.println("信息录入失败");
+        }
+    }
+
+}
+```
+
+```java
+public class Student {
+
+    private Integer flowID;
+    private Integer type;
+    private String IDCard;
+    private String examCard;
+    private String studentName;
+    private String location;
+    private Integer grade;
+
+    public Student() {
+    }
+
+    public Student(Integer flowID, Integer type, String IDCard, String examCard, String studentName, String location, Integer grade) {
+        this.flowID = flowID;
+        this.type = type;
+        this.IDCard = IDCard;
+        this.examCard = examCard;
+        this.studentName = studentName;
+        this.location = location;
+        this.grade = grade;
+    }
+
+    public Integer getFlowID() {
+        return flowID;
+    }
+
+    public void setFlowID(Integer flowID) {
+        this.flowID = flowID;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getIDCard() {
+        return IDCard;
+    }
+
+    public void setIDCard(String IDCard) {
+        this.IDCard = IDCard;
+    }
+
+    public String getExamCard() {
+        return examCard;
+    }
+
+    public void setExamCard(String examCard) {
+        this.examCard = examCard;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "flowID=" + flowID +
+                ", type=" + type +
+                ", IDCard='" + IDCard + '\'' +
+                ", examCard='" + examCard + '\'' +
+                ", studentName='" + studentName + '\'' +
+                ", location='" + location + '\'' +
+                ", grade=" + grade +
+                '}';
+    }
+}
+```
+
+### druid数据库连接池
+
+```java
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.alibaba.druid.pool.DruidPooledConnection;
+import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Properties;
+
+public class DataSourceTest {
+
+    /*
+    方式二：
+     */
+    @Test
+    public void test2() throws Exception {
+        Properties props = new Properties();
+        props.load(DataSourceTest.class.getClassLoader().getResourceAsStream("druid.properties"));
+        DataSource ds = DruidDataSourceFactory.createDataSource(props);
+
+        Connection conn = ds.getConnection();
+
+        System.out.println(conn);
+    }
+
+    /*
+    方式一：
+     */
+    @Test
+    public void test1() throws SQLException {
+        DruidDataSource dds = new DruidDataSource();
+        dds.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dds.setUrl("jdbc:mysql://192.168.17.21:3306/test?serverTimezone=UTC");
+        dds.setUsername("root");
+        dds.setPassword("123456");
+
+        dds.setMaxActive(10);
+        dds.setInitialSize(5);
+
+        Connection connection = dds.getConnection();
+
+        System.out.println(connection);
+
+    }
+
+}
+
+```
+
+```java
+driverClassName=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://192.168.17.21:3306/test?serverTimezone=UTC&rewriteBatchedStatements=true
+username=root
+password=123456
+```
+
+### 事务
+
+```java
+import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class TransactionTest {
+
+    MyQueryRunner mqr = new MyQueryRunner();
+
+    @Test
+    public void test1(){
+        Connection conn = null;
+        try {
+            conn = JDBCUtils.getConnection();
+
+            //取消自动提交,开启事务
+            conn.setAutoCommit(false);
+
+            String sql1 = "update user_table set balance = balance - 100 where user = ?";
+            mqr.update(conn, sql1, "AA");
+
+            //模拟故障
+//            int i = 10 / 0;
+
+            String sql2 = "update user_table set balance = balance + 100 where user = ?";
+            mqr.update(conn, sql2, "BB");
+
+            //提交
+            conn.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            //回滚
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            JDBCUtils.close(conn, null, null);
+        }
+    }
+
+}
+```
+
+### DBUtils
+
+```java
+
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.junit.Test;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+public class DBUtilsTest {
+    private static DataSource ds = null;
+
+    static{
+        Properties props = new Properties();
+        try {
+            props.load(DataSourceTest.class.getClassLoader().getResourceAsStream("druid.properties"));
+
+            ds = DruidDataSourceFactory.createDataSource(props);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    QueryRunner qr = new QueryRunner(ds);
+
+    @Test
+    public void test6(){
+        ResultSetHandler<Customer> rsh = new ResultSetHandler<Customer>() {
+            @Override
+            public Customer handle(ResultSet rs) throws SQLException {
+                return null;
+            }
+        };
+    }
+
+    @Test
+    public void test5() throws SQLException {
+//        String sql = "select max(birth) from customers";
+        String sql = "select count(*) from customers";
+        Object obj = qr.query(sql, new ScalarHandler());
+        System.out.println(obj);
+    }
+
+    /*
+    name ======= 林志玲
+    birth ======= 1984-06-12
+    id ======= 3
+    email ======= linzl@gmail.com
+     */
+    @Test
+    public void test4() throws SQLException {
+        String sql = "select id, name, email, birth from customers where id <= ?";
+        List<Map<String, Object>> list = qr.query(sql, new MapListHandler(), 20);
+
+        for (Map<String, Object> map : list) {
+            Set<Map.Entry<String, Object>> set = map.entrySet();
+
+            for (Map.Entry<String, Object> entry : set) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                System.out.println(key + " ======= " + value);
+            }
+
+            System.out.println("----------------------------------------");
+        }
+    }
+
+    //查询多个对象，并存入 List 中
+    @Test
+    public void test3() throws SQLException {
+        String sql = "select id, name, email, birth from customers where id <= ?";
+        List<Customer> list = qr.query(sql, new BeanListHandler<>(Customer.class), 20);
+        for (Customer customer : list) {
+            System.out.println(customer);
+        }
+    }
+
+    //查询单个对象
+    @Test
+    public void test2() throws SQLException {
+        String sql = "select id, name, email, birth from customers where id = ?";
+        Customer customer = qr.query(sql, new BeanHandler<>(Customer.class), 19);
+        System.out.println(customer);
+    }
+
+    @Test
+    public void test1(){
+        Connection conn = null;
+        try {
+            conn = JDBCUtils.getConnection();
+
+            String sql = "insert into customers(id, name, email, birth) values(?,?,?,?)";
+            int row = qr.update(conn, sql, 25, "蒋苗", "jiangmiao@abc.com", "1999-9-9");
+            System.out.println("已影响 " + row + " 行");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(conn, null, null);
+        }
+    }
+
+}
+
+```
