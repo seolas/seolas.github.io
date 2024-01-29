@@ -15285,11 +15285,11 @@ public class FileDemo05 {
         FileOutputStream fos = new FileOutputStream("day18_code\\src\\com\\test\\io\\file\\FileOutputStream.txt");
 
         //进行写出操作
-        fos.write("尚".getBytes());
+        fos.write("给".getBytes());
         fos.write("\r\n".getBytes());
-        fos.write("硅".getBytes());
+        fos.write("个".getBytes());
         fos.write("\r\n".getBytes());
-        fos.write("谷".getBytes());
+        fos.write("跟".getBytes());
 
         //关闭资源
         fos.close();
@@ -15783,11 +15783,11 @@ public class BufferedDemo03 {
         //创建缓冲字符输出流对象
         BufferedWriter bw = new BufferedWriter(new FileWriter("day19_code\\src\\com\\test\\io\\buffered\\BufferedWriter.txt"));
 
-        bw.write("尚");
+        bw.write("哈");
         bw.newLine();
-        bw.write("硅");
+        bw.write("吼");
         bw.newLine();
-        bw.write("谷");
+        bw.write("嘻");
 
 
         //关闭资源
