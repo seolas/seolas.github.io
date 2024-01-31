@@ -2466,6 +2466,27 @@ this关键字用法
 
 ## vue生命周期
 
+- 生命周期函数的作用   主要记录/监控/改变 vue对象中在各个时期的状态.
+
+- 生命周期函数 是有程序自动调用. 和程序员无关.
+
+- 生命周期函数 名称是固定的 不能随意乱写
+
+- 生命周期状态
+
+  - 初始化状态
+    - beforeCreate   vue对象创建前调用
+    - ==created==           vue对象创建成功之后调用
+  - 挂载状态
+    - beforeMount    挂载数据之前执行.
+    - ==mounted==           数据挂载后执行   标志着用户可以看到完整页面
+  - 修改状态
+    - beforeUpdate   函数在数据修改之前执行
+    - updated             函数在数据修改之后执行
+  - 销毁状态
+    - beforeDestroy   vue对象在销毁前执行的函数
+    - destroyed          vue对象销毁 
+
 ```html
 <!DOCTYPE html>
 <html>
