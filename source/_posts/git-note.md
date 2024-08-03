@@ -1,7 +1,8 @@
 ---
 title: Git 笔记
 date: 2023-12-21 22:54:09
-tags: [git]
+tags:
+- Git
 ---
 
 [参考教程](https://www.liaoxuefeng.com/wiki/896043488029600)
@@ -121,8 +122,6 @@ git init
 ```bash
 git add readme.txt
 ```
-
-## xxxxxxxxxx # test.cpp#include <iostream>#include "base.h"int main(){    std::cout <<extBufSize << std::endl;    return 0;}cpp
 
 查看文件状态
 

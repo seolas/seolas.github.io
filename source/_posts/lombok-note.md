@@ -1,8 +1,9 @@
 ---
 title: Lombok 笔记
 date: 2023-12-29 15:49:43
-tags: [lombok]
 categories: Java
+tags:
+- Lombok
 ---
 
 ```java
