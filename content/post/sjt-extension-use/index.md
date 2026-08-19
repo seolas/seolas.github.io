@@ -18,7 +18,7 @@ tags:
 
 ## 安装浏览器插件
 
-1.下载 `数据棠安装包-xxx.zip` 安装包 
+1.下载 最新版本 [数据棠安装包-v0.15.27.zip](https://gitee.com/seolas/shujutang-release/releases/download/v0.15.27/%E6%95%B0%E6%8D%AE%E6%A3%A0%E5%AE%89%E8%A3%85%E5%8C%85-v0.15.27.zip) 安装包
 
 2.解压缩
 
