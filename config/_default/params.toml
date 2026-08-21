@@ -50,8 +50,14 @@ SortBy              = "default"
 
 ## Comments
 [comments]
-    enabled  = false
-    provider = "disqus"
+    enabled  = true
+    provider = "twikoo"
+
+    [comments.twikoo]
+    envId  = "https://comment.shujutang.top"
+    region = ""
+    path   = ""
+    lang   = "zh-CN"
 
     # See all the available configurations at https://github.com/CaiJimmy/hugo-theme-stack/blob/master/config/_default/params.toml
     # Copy the configurations you need from there and paste it here.

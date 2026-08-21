@@ -6,7 +6,7 @@ slug: sjt-extension-use
 image: cover.jpg
 math: 
 license: 
-comments: false
+comments: true
 build:
     list: always    # Change to "never" to hide the page from the list
 weight: 1       # You can add weight to some posts to override the default sorting (date descending)
